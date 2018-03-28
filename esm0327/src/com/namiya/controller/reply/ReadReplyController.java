@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.namiya.controller.Controller;
 import com.namiya.model.NamiyaAnswerVO;
 import com.namiya.model.NamiyaDAO;
-import com.namiya.model.NamiyaPostVO;
 
 public class ReadReplyController implements Controller {
 

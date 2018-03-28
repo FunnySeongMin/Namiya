@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import com.namiya.controller.Controller;
 import com.namiya.model.NamiyaAnswerVO;
 import com.namiya.model.NamiyaDAO;
-import com.namiya.model.NamiyaPostVO;
 import com.namiya.model.NamiyaUserVO;
 
 public class CreateReplyController implements Controller {
