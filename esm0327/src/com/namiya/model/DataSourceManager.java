@@ -1,8 +1,14 @@
 package com.namiya.model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
+
 
 public class DataSourceManager {
 	//DB에 연결해주는 클래스
@@ -21,5 +27,18 @@ public class DataSourceManager {
 	}
 	public DataSource getDataSource() {
 		return ds;
+	}
+	
+	public void closeAll(PreparedStatement pstmt, Connection con) throws SQLException {
+		closeAll(null, pstmt, con);
+	}
+
+	public void closeAll(ResultSet rs, PreparedStatement pstmt, Connection con) throws SQLException {
+		if (rs != null)
+			rs.close();
+		if (pstmt != null)
+			pstmt.close();
+		if (con != null)
+			con.close();
 	}
 }
