@@ -9,6 +9,14 @@ public class NamiyaPostVO {
 	private int reply;
 	private NamiyaUserVO userVO;
 	
+	//답변 등록 시 사용
+	public NamiyaPostVO(String pTitle, String pContent, NamiyaUserVO userVO) {
+		this.pTitle = pTitle;
+		this.pContent = pContent;
+		this.userVO = userVO;
+	}
+	
+	//게시글 등록 시 사용
 	public NamiyaPostVO(String pTitle, String pContent, int lock, NamiyaUserVO userVO) {
 		super();
 		this.pTitle = pTitle;
@@ -16,6 +24,8 @@ public class NamiyaPostVO {
 		this.lock = lock;
 		this.userVO = userVO;
 	}
+	
+	//게시글 불러올 때사용
 	public NamiyaPostVO(int pNo, String pTitle, String pContent, String pDate, int lock, int reply,
 			NamiyaUserVO userVO) {
 		super();

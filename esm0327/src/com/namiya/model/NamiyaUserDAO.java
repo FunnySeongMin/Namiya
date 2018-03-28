@@ -7,17 +7,19 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-public class UserDAO {
-	private static UserDAO instance=new UserDAO();
+public class NamiyaUserDAO {
+	private static NamiyaUserDAO instance=new NamiyaUserDAO();
 	private DataSourceManager db;
 	private DataSource dataSource;
-	private UserDAO() {
+	private NamiyaUserDAO() {
 		db=DataSourceManager.getInstance();
 		dataSource=db.getDataSource();
 	}
-	public static UserDAO getInstance() {
+	public static NamiyaUserDAO getInstance() {
 		return instance;
 	}
+	
+	//로그인 메서드
 	public NamiyaUserVO login(String id, String password) throws SQLException {
 		NamiyaUserVO vo = null;
 		Connection con = null;
@@ -46,7 +48,28 @@ public class UserDAO {
 			}
 		} finally {
 			db.closeAll(rs, pstmt, con); 
-		}
+		}//finally
 		return vo;
-	}
+	}//method
+	
+	//회원가입 메서드
+	public void createUser(NamiyaUserVO vo) {
+		
+	}//method
+	
+	//회원수정 메서드
+	public void updateUser(NamiyaUserVO vo) {
+		
+	}//method
+	
+	//회원탈퇴 메서드
+	public void deleteUser(String id) {
+		
+	}//method
+	
+	//전체 회원 수 조회 메서드
+	public int totalUserCount() {
+		
+		return 0;
+	}//method
 }

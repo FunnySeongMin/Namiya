@@ -8,6 +8,7 @@ public class ListVO {
 	public ListVO() {
 		super();
 	}
+	
 	public ListVO(ArrayList<NamiyaPostVO> list, PagingBean pagingBean) {
 		super();
 		this.list = list;

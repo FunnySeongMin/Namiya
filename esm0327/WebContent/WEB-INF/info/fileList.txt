@@ -1,7 +1,7 @@
 ***fileList***
-UesrDAO -  Login (Sting id , String password) -->NamiyauserVO
-				CreateUser (NamiyauserVO) --> void
-				UpdateUser (NamiyauserVO) -->void
+UesrDAO -  Login (Sting id , String password) -->NamiyaUserVO
+				CreateUser (NamiyaUserVO) --> void
+				UpdateUser (NamiyaUserVO) -->void
 				DeleteUser (String id) --> void
 				TotalUserCount () --> int
 NamiyaDAO -  CreatePost ( NamiyaPostVO <- reset pno ) --> void
