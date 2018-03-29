@@ -14,7 +14,8 @@ public class ReadReplyController implements Controller {
 		//번호에 해당하는 답변에 내용 가져오기
 		int pno=Integer.parseInt(request.getParameter(""));
 		NamiyaAnswerVO vo=NamiyaDAO.getInstance().readReply(pno);
-		return null;
+		request.setAttribute("url", "");
+		return "index.jsp";
 	}
 
 }

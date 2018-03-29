@@ -63,9 +63,26 @@ public class NamiyaDAO {
 	}//method
 	
 	//전달받은 글번호에 맞는 답변의 내용을 반환하는 메서드
-	public NamiyaAnswerVO readReply(int pno) {
-		// TODO Auto-generated method stub
-		return null;
+	public NamiyaAnswerVO readReply(int pno) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		NamiyaAnswerVO vo=new NamiyaAnswerVO();
+		try {
+			con=dataSource.getConnection();
+			String sql="SELECT a.p_no, a.a_title, a.a_content, to_char(a.a_date,'yyyy.mm.dd')"
+					+ " FROM namiya_answer a, namiya_post p"
+					+ " WHERE a.p_no = p.p_no and a.p_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pno);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				vo=new NamiyaAnswerVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return vo;
 	}//method
 
 	//게시글의 내용을 수정하는 메서드

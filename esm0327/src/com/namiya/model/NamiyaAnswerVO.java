@@ -7,6 +7,14 @@ public class NamiyaAnswerVO {
 	private String aDate;
 	private NamiyaUserVO userVO;
 	
+	
+	public NamiyaAnswerVO(int pNo, String aTitle, String aContent, String aDate) {
+		super();
+		this.pNo = pNo;
+		this.aTitle = aTitle;
+		this.aContent = aContent;
+		this.aDate = aDate;
+	}
 	//등록시 사용하는 생성자
 	public NamiyaAnswerVO(String aTitle, String aContent, NamiyaUserVO userVO) {
 		super();
