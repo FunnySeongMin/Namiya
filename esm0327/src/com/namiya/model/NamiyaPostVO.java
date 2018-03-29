@@ -5,7 +5,7 @@ public class NamiyaPostVO {
 	private String pTitle;
 	private String pContent;
 	private String pDate;
-	private int lock;
+	private String lock;
 	private int reply;
 	private NamiyaUserVO userVO;
 	
@@ -17,7 +17,7 @@ public class NamiyaPostVO {
 	}
 	
 	//게시글 등록 시 사용
-	public NamiyaPostVO(String pTitle, String pContent, int lock, NamiyaUserVO userVO) {
+	public NamiyaPostVO(String pTitle, String pContent, String lock, NamiyaUserVO userVO) {
 		super();
 		this.pTitle = pTitle;
 		this.pContent = pContent;
@@ -26,7 +26,7 @@ public class NamiyaPostVO {
 	}
 	
 	//게시글 불러올 때사용
-	public NamiyaPostVO(int pNo, String pTitle, String pContent, String pDate, int lock, int reply,
+	public NamiyaPostVO(int pNo, String pTitle, String pContent, String pDate, String lock, int reply,
 			NamiyaUserVO userVO) {
 		super();
 		this.pNo = pNo;
@@ -64,10 +64,10 @@ public class NamiyaPostVO {
 	public void setpDate(String pDate) {
 		this.pDate = pDate;
 	}
-	public int getLock() {
+	public String getLock() {
 		return lock;
 	}
-	public void setLock(int lock) {
+	public void setLock(String lock) {
 		this.lock = lock;
 	}
 	public int getReply() {

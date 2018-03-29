@@ -1,4 +1,4 @@
-package com.namiya.controller.reply;
+package com.namiya.controller.post;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

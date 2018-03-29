@@ -16,7 +16,7 @@ public class CreatePostController implements Controller {
 		//게시글을 등록시키고 그 글의 번호를 반환받아 보여주는 컨트롤러
 		String pTitle=request.getParameter("");
 		String pContent=request.getParameter("");
-		int lock=Integer.parseInt(request.getParameter(""));
+		String lock=request.getParameter("");
 		HttpSession session=request.getSession(false);
 		NamiyaUserVO userVO=(NamiyaUserVO) session.getAttribute("");
 		NamiyaPostVO	postVO=new NamiyaPostVO(pTitle, pContent, lock, userVO);
