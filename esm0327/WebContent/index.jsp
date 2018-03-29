@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	git 연습중1
+	git 연습중1 
 	연습 2
 	테스트 중~~~
 	뀨~~~
