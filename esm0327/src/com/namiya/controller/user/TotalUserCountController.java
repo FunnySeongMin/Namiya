@@ -12,7 +12,9 @@ public class TotalUserCountController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//전체 회원수를 검색해주는 컨트롤러
 		int count=NamiyaUserDAO.getInstance().totalUserCount();
-		return null;
+		request.setAttribute("userCount", count);
+		request.setAttribute("url", "/totalCount.jsp");
+		return "/template/layout.jsp";
 	}
 
 }

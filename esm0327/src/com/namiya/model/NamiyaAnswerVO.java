@@ -14,6 +14,7 @@ public class NamiyaAnswerVO {
 		this.aContent = aContent;
 		this.userVO = userVO;
 	}
+	//view에 구현할때 사용하는 생성자
 	public NamiyaAnswerVO(int pNo, String aTitle, String aContent, String aDate, NamiyaUserVO userVO) {
 		super();
 		this.pNo = pNo;

@@ -19,6 +19,18 @@ public class NamiyaUserDAO {
 		return instance;
 	}
 	
+	public void closeAll(PreparedStatement pstmt,Connection con) throws SQLException{
+		if(pstmt!=null)
+			pstmt.close();
+		if(con!=null)
+			con.close(); 
+	}
+	public void closeAll(ResultSet rs,PreparedStatement pstmt,Connection con) throws SQLException{
+		if(rs!=null)
+			rs.close();
+		closeAll(pstmt,con);
+	}	
+	
 	//로그인 메서드
 	public NamiyaUserVO login(String id, String password) throws SQLException {
 		NamiyaUserVO vo = null;
@@ -47,14 +59,26 @@ public class NamiyaUserDAO {
 				vo.setGrade(rs.getString(2));
 			}
 		} finally {
-			db.closeAll(rs, pstmt, con); 
+			closeAll(rs, pstmt, con); 
 		}//finally
 		return vo;
 	}//method
 	
 	//회원가입 메서드
-	public void createUser(NamiyaUserVO vo) {
-		
+	public void createUser(NamiyaUserVO vo) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="INSERT INTO namiya_user(id, password, nickname ) VALUES('?','?','?')";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, vo.getId());
+			pstmt.setString(2, vo.getPassword());
+			pstmt.setString(3, vo.getNickName());
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 	
 	//회원수정 메서드
@@ -68,8 +92,22 @@ public class NamiyaUserDAO {
 	}//method
 	
 	//전체 회원 수 조회 메서드
-	public int totalUserCount() {
-		
-		return 0;
+	public int totalUserCount() throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int count=0;
+		try {
+			con=dataSource.getConnection();
+			String sql="select count(*) from namiya_user";
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return count;
 	}//method
 }

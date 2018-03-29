@@ -16,8 +16,7 @@ public class CreateUserController implements Controller {
 		String nickName=request.getParameter("");
 		String password=request.getParameter("");
 		NamiyaUserVO vo=new NamiyaUserVO(id, nickName, password);
-		NamiyaUserDAO.getInstance().createUser(vo);
-		return null;
+		NamiyaUserDAO.getInstance().createUser(vo); 
+		return "index.jsp";
 	}
-
 }

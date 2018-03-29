@@ -8,7 +8,7 @@ public class ListVO {
 	public ListVO() {
 		super();
 	}
-	
+	//게시글 목록을 구현할때 쓰는 생성자
 	public ListVO(ArrayList<NamiyaPostVO> list, PagingBean pagingBean) {
 		super();
 		this.list = list;
