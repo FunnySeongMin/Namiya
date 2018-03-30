@@ -5,7 +5,7 @@
 <nav class="navbar navbar-inverse" role="navigation">
 	<div class="container-fluid">
 		<!-- 헤더 메인메뉴 설정 -->
-		<div class="navbar-header">
+		<div class="navbar-header animated rotateIn">
 			<a href="#"><img src="assets/img/logo.png"></a>
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex2-collapse">
 				<span class="sr-only">Toggle navigation</span> 
