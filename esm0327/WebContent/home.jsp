@@ -24,7 +24,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css">
 <!-- favicon -->
 <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon-namiya.ico" />
-
+<!-- animate.css -->
+<link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 
 <!-- fontawesom -->
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
