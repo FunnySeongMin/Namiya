@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="Techie Bootstrap 3 skin">
 <meta name="keywords" content="bootstrap 3, skin, flat">
-<meta name="author" content="bootstraptaste">
+<meta name="author" content="bootstraptaste"> 
 <!-- Bootstrap css -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 <link href="assets/css/bootstrap.techie.css" rel="stylesheet">
