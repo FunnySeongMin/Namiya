@@ -8,6 +8,7 @@ public class NamiyaPostVO {
 	private String lock;
 	private int reply;
 	private NamiyaUserVO userVO;
+	private NamiyaAnswerVO answerVO;
 	
 	//답변 등록 시 사용
 	public NamiyaPostVO(String pTitle, String pContent, NamiyaUserVO userVO) {
@@ -37,6 +38,20 @@ public class NamiyaPostVO {
 		this.reply = reply;
 		this.userVO = userVO;
 	}
+	//답변있는 글 불러오기
+	public NamiyaPostVO(int pNo, String pTitle, String pContent, String pDate, String lock, int reply,
+			NamiyaUserVO userVO, NamiyaAnswerVO answerVO) {
+		super();
+		this.pNo = pNo;
+		this.pTitle = pTitle;
+		this.pContent = pContent;
+		this.pDate = pDate;
+		this.lock = lock;
+		this.reply = reply;
+		this.userVO = userVO;
+		this.answerVO = answerVO;
+	}
+
 	public NamiyaPostVO() {
 		super();
 	}
@@ -81,5 +96,13 @@ public class NamiyaPostVO {
 	}
 	public void setUserVO(NamiyaUserVO userVO) {
 		this.userVO = userVO;
+	}
+
+	public NamiyaAnswerVO getAnswerVO() {
+		return answerVO;
+	}
+
+	public void setAnswerVO(NamiyaAnswerVO answerVO) {
+		this.answerVO = answerVO;
 	}
 }
