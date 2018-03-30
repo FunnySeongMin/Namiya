@@ -13,7 +13,7 @@
 <meta name="keywords" content="bootstrap 3, skin, flat">
 <meta name="author" content="bootstraptaste"> 
 <!-- Bootstrap css -->
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> 
 <link href="assets/css/bootstrap.techie.css" rel="stylesheet">
 <!-- loginModal -->
 <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -24,8 +24,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/css/bootstrap-dialog.min.css">
 <!-- favicon -->
 <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon-namiya.ico" />
-<!-- animate.css -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+
 <!-- fontawesom -->
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 <!-- jQuery -->
