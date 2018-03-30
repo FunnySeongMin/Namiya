@@ -1,4 +1,4 @@
-package com.namiya.controller.post;
+package com.namiya.controller.reply;
 
 import java.util.ArrayList;
 
