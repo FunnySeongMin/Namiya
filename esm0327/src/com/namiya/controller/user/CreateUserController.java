@@ -12,11 +12,12 @@ public class CreateUserController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//회원가입 처리 컨트롤러
-		String id=request.getParameter("");
-		String nickName=request.getParameter("");
-		String password=request.getParameter("");
+		String id=request.getParameter("userId");
+		String nickName=request.getParameter("userNick");
+		String password=request.getParameter("userPassword");
 		NamiyaUserVO vo=new NamiyaUserVO(id, nickName, password);
+		System.out.println(vo);
 		NamiyaUserDAO.getInstance().createUser(vo); 
-		return "index.jsp";
+		return "/home.jsp";
 	}
 }

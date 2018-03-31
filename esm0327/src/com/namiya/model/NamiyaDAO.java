@@ -40,8 +40,25 @@ public class NamiyaDAO {
 	}//method
 
 	//답변 등록 메서드
-	public void createReply(NamiyaAnswerVO answerVO) {
-		
+	public void createReply(NamiyaAnswerVO answerVO) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		String sql=null;
+		try {
+			con=dataSource.getConnection();
+			sql="UPDATE namiya_post SET reply = 1 WHERE p_no = ?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.executeUpdate();
+			pstmt.close();
+			sql="insert into namiya_answer(p_no,a_title,a_content) valuse(?,?,?)";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, answerVO.getpNo());
+			pstmt.setString(2, answerVO.getaTitle());
+			pstmt.setString(3, answerVO.getaContent());
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 
 	//pagingBean에 따른 row넘버 기준으로 게시물 목록을 반환하는 메서드
@@ -112,8 +129,73 @@ public class NamiyaDAO {
 	}//method
 
 	//답변이 없는 게시글의 목록을 가져오는 메서드
-	public ArrayList<NamiyaPostVO> unAnswerList(PagingBean pagingBean) {
-		
-		return null;
+	public ArrayList<NamiyaPostVO> unAnswerList(PagingBean pagingBean) throws SQLException {
+		ArrayList<NamiyaPostVO> list=new ArrayList<NamiyaPostVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=dataSource.getConnection();
+			StringBuilder sql=new StringBuilder();
+			sql.append("select p.p_no,p.reply,u.nickname,p.p_title,to_char(p.p_date,'yyyy.mm.dd') ");
+			sql.append("from namiya_user u , namiya_post p ");
+			sql.append("where u.id=p.id and p.reply=0 ");
+			pstmt=con.prepareStatement(sql.toString());
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				NamiyaPostVO pvo=new NamiyaPostVO();
+				pvo.setpNo(rs.getInt(1));
+				pvo.setReply(rs.getInt(2));
+				pvo.setpTitle(rs.getString(4));
+				pvo.setpDate(rs.getString(5));
+				NamiyaUserVO uvo=new NamiyaUserVO();
+				uvo.setNickName(rs.getString(3));
+				list.add(pvo);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return list;
 	}//method
+	
+	//아이디 체크 메서드
+	public String checkId(String id) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		String flag=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="select id from namiya_user where id=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				flag=rs.getString(1);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return flag;
+	}//method
+
+	//답변없는 게시물의 총 숫자
+	public int getUnAnsweredPostCount() throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int count=0;
+		try {
+			con=dataSource.getConnection();
+			String sql="select count(*) from namiya_post where reply=0";
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return count;
+	}
 }

@@ -37,22 +37,24 @@
 
 			<div class="cd-signin-modal__block js-signin-modal-block" data-type="signup">
 				<!-- 회원가입폼 -->
-				<form class="cd-signin-modal__form">
-				
+				<form id="register" action="dispatcher" class="cd-signin-modal__form">
+				<input type="hidden" name="command" value="CreateUser">
 					<!-- 이메일 -->
 					<p class="cd-signin-modal__fieldset">
+					<span id="checkId"></span><br>
 						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signup-email">이메일</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-email" type="email" placeholder="이메일" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
+						<input name="userId" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-email" type="email" placeholder="이메일" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
 					
 					<!-- 비밀번호 -->
 					<p class="cd-signin-modal__fieldset">
 						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">비밀번호</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-password" type="password"  placeholder="비밀번호" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
+						<input name="userPassword" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-password" type="password"  placeholder="비밀번호" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
 					
 					<!-- 비밀번호 확인 -->
 					<p class="cd-signin-modal__fieldset">
+					<span id="checkPass"></span><br>
 						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">비밀번호확인</label>
 						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-password2" type="password"  placeholder="비밀번호확인" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
@@ -60,7 +62,7 @@
 					<!-- 닉네임 -->
 					<p class="cd-signin-modal__fieldset">
 						<label class="cd-signin-modal__label cd-signin-modal__label--username cd-signin-modal__label--image-replace" for="signup-username">닉네임</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-username" type="text" placeholder="닉네임" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
+						<input name="userNick" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-username" type="text" placeholder="닉네임" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
 					
 					<!-- 약관 -->
@@ -103,5 +105,42 @@
 <script src="assets/js/main.js"></script>
 <!-- /loginModal -->
 <script>
-	
+	$(document).ready(function(){
+		//var idTag = $('#idTool[data-toggle="tooltip"]');
+		//id 중복체크
+		$("#signup-email").keyup(function(){
+			var inputId=$(this).val();
+			//console.log(inputId);
+			$.ajax({
+				type:"post",
+				dataType:"json",
+				url:"dispatcher",
+				data:"command=CheckId&id="+inputId,
+				success:function(data){
+					if(data.flag=="true"){
+						$("#checkId").html("사용가능!").css("color","blue");
+					} else {
+						$("#checkId").html("사용불가!").css("color","red");
+					}
+				}
+			})//ajax
+		});//keyup
+		//비밀번호 일치 체크
+		$("#signup-password2").keyup(function(){
+			var checkPass=$(this).val();
+			if($("#signup-password").val()==checkPass){
+				$("#checkPass").html("비밀번호 일치!").css("color","blue");
+			}else{
+				$("#checkPass").html("비밀번호가 일치하지 않습니다!").css("color","red");
+			}
+		});//keyup
+		//submit 제어
+		$("#register").submit(function(){
+			if($("#checkId").text()=="사용가능!"&&$("#checkPass").text()=="비밀번호 일치!"){
+				return true;
+			}
+			alert("아이디와 비밀번호를 확인해 주세요.");
+			return false;
+		})//click
+	});//ready
 </script>

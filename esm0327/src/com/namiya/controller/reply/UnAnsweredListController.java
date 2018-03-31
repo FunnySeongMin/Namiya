@@ -16,12 +16,19 @@ public class UnAnsweredListController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//답변이 달리지 않은 목록을 뽑아낸다. 설명은 겹치는 부분이 많아 생략!
-		int totalCount=NamiyaDAO.getInstance().getTotalPostCount();
+		int totalCount=NamiyaDAO.getInstance().getUnAnsweredPostCount();
 		String nowPage=request.getParameter("");
 		PagingBean pagingBean=null;
+		if(nowPage==null){
+			pagingBean=new PagingBean(totalCount);
+		}else{
+			pagingBean=new PagingBean(totalCount,Integer.parseInt(nowPage));
+		}
 		ArrayList<NamiyaPostVO> list=NamiyaDAO.getInstance().unAnswerList(pagingBean);
 		ListVO vo=new ListVO(list, pagingBean);
-		return null;
+		request.setAttribute("list", vo);
+		request.setAttribute("url", "");
+		return "home.jsp";
 	}
 
 }

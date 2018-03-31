@@ -70,7 +70,7 @@ public class NamiyaUserDAO {
 		PreparedStatement pstmt=null;
 		try {
 			con=dataSource.getConnection();
-			String sql="INSERT INTO namiya_user(id, password, nickname ) VALUES('?','?','?')";
+			String sql="INSERT INTO namiya_user(id, password, nickname ) VALUES(?,?,?)";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
 			pstmt.setString(2, vo.getPassword());
