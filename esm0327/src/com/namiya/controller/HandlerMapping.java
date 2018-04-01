@@ -55,6 +55,8 @@ public class HandlerMapping {
 			c=new ReadReplyController();
 		}else if(command.equals("UpdatePost")) {
 			c=new UpdatePostController();
+		}else if(command.equals("UpdateReplyView")) {
+			c=new UpdateReplyViewController();
 		}else if(command.equals("UpdateReply")) {
 			c=new UpdateReplyController();
 		}else if(command.equals("DeletePost")) {

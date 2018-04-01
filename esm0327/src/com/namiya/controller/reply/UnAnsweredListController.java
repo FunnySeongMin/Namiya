@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.namiya.controller.Controller;
 import com.namiya.model.ListVO;
@@ -16,6 +17,10 @@ public class UnAnsweredListController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//답변이 달리지 않은 목록을 뽑아낸다. 설명은 겹치는 부분이 많아 생략!
+		HttpSession session=request.getSession(false);
+		if(session==null||session.getAttribute("mvo")==null){
+			return "redirect:index.jsp";
+		}
 		int totalCount=NamiyaDAO.getInstance().getUnAnsweredPostCount();
 		String nowPage=request.getParameter("");
 		PagingBean pagingBean=null;

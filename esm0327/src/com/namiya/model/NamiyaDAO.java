@@ -87,10 +87,11 @@ public class NamiyaDAO {
 		NamiyaAnswerVO vo=new NamiyaAnswerVO();
 		try {
 			con=dataSource.getConnection();
-			String sql="SELECT a.p_no, a.a_title, a.a_content, to_char(a.a_date,'yyyy.mm.dd')"
-					+ " FROM namiya_answer a, namiya_post p"
-					+ " WHERE a.p_no = p.p_no and a.p_no=?";
-			pstmt=con.prepareStatement(sql);
+			StringBuilder sql=new StringBuilder();
+			sql.append("SELECT a.p_no, a.a_title, a.a_content, to_char(a.a_date,'yyyy.mm.dd') ");
+			sql.append("FROM namiya_answer a, namiya_post p ");
+			sql.append("WHERE a.p_no = p.p_no and a.p_no=? ");
+			pstmt=con.prepareStatement(sql.toString());
 			pstmt.setInt(1, pno);
 			rs=pstmt.executeQuery();
 			if(rs.next()) {
@@ -108,8 +109,20 @@ public class NamiyaDAO {
 	}//method
 
 	//답변의 내용을 수정하는 메서드
-	public void updateReply(int pno) {
-		
+	public void updateReply(int pno, String aTitle, String aContent) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="update namiya_answer set a_title=?,a_content=? where p_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, aTitle);
+			pstmt.setString(2, aContent);
+			pstmt.setInt(3, pno);
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 
 	//게시글을 삭제하는 메서드
@@ -118,8 +131,24 @@ public class NamiyaDAO {
 	}//method
 
 	//답변을 삭제하는 메서드
-	public void deleteReply(int pno) {
-		
+	public void deleteReply(int pno) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		String sql=null;
+		try{
+			con=dataSource.getConnection();
+			sql="update namiya_post set reply=0 where p_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pno);
+			pstmt.executeUpdate();
+			pstmt.close();
+			sql="delete from namiya_answer where p_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pno);
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 	
 	//총 게시물 수를 반환하는 메서드
@@ -137,10 +166,13 @@ public class NamiyaDAO {
 		try {
 			con=dataSource.getConnection();
 			StringBuilder sql=new StringBuilder();
-			sql.append("select p.p_no,p.reply,u.nickname,p.p_title,to_char(p.p_date,'yyyy.mm.dd') ");
-			sql.append("from namiya_user u , namiya_post p ");
-			sql.append("where u.id=p.id and p.reply=0 ");
+			sql.append("select p.p_no,p.reply,u.nickname,p.p_title,p.timeposted ");
+			sql.append("from (select row_number() over(order by p_no desc) as rnu,p_no,p_title,");
+			sql.append("id,to_char(p.p_date,'yyyy.mm.dd') timeposted from namiya_post) p ");
+			sql.append(", namiya_user where u.id=p.id and p.reply=0 and rnum between ? and ? ");
 			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, pagingBean.getStartRowNumber());
+			pstmt.setInt(2, pagingBean.getEndRowNumber());
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				NamiyaPostVO pvo=new NamiyaPostVO();
@@ -198,4 +230,32 @@ public class NamiyaDAO {
 		}
 		return count;
 	}
+
+	public NamiyaAnswerVO getUpdateAnswerView(int pno) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		NamiyaAnswerVO vo=new NamiyaAnswerVO();
+		try {
+			con=dataSource.getConnection();
+			StringBuilder sql=new StringBuilder();
+			sql.append("SELECT a.a_title, a.a_content, to_char(a.a_date,'yyyy.mm.dd') ");
+			sql.append("FROM namiya_answer a, namiya_post p ");
+			sql.append("WHERE a.p_no = p.p_no and a.p_no=?");
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, pno);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setpNo(pno);
+				vo.setaTitle(rs.getString(1));
+				vo.setaContent(rs.getString(2));
+				vo.setaDate(rs.getString(3));
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return vo;
+	}
+
+	
 }
