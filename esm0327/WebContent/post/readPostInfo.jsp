@@ -2,22 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<script type="text/javascript">
-	function deleteConfirm() {
-		if (confirm("게시글을 삭제하시겠습니까?")) {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=DeletePost&pNo=${requestScope.postVO.pNo}";
-		} else {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=ReadPostInfo&pNo=${requestScope.postVO.pNo}";
-		}
-	}
-	function updateConfirm() {
-		if (confirm("게시글을 수정하시겠습니까?")) {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=UpdatePostView&pNo=${requestScope.postVO.pNo}";
-		} else {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=ReadPostInfo&pNo=${requestScope.postVO.pNo}";
-		}
-	}
-</script>
+
 <style>
 a.post {
 	text-decoration: none;
@@ -51,6 +36,31 @@ a.post {
 
 </div>
 
+	<div id="replyview"><!-- 답글 보기 -->
+			<c:import url="/reply/replyview.jsp"/>
+	</div><!-- 답글 보기 -->
+		<div id="replyupdateview"><!-- 답글 수정하기 -->
+			<c:import url="/reply/replyupdateview.jsp"/>
+	</div><!-- 답글 수정하기 -->
+
+
 <br>
 <br>
 <br>
+
+<script type="text/javascript">
+	function deleteConfirm() {
+		if (confirm("게시글을 삭제하시겠습니까?")) {
+			location.href = "${pageContext.request.contextPath}/dispatcher?command=DeletePost&pNo=${requestScope.postVO.pNo}";
+		} else {
+			location.href = "${pageContext.request.contextPath}/dispatcher?command=ReadPostInfo&pNo=${requestScope.postVO.pNo}";
+		}
+	}
+	function updateConfirm() {
+		if (confirm("게시글을 수정하시겠습니까?")) {
+			location.href = "${pageContext.request.contextPath}/dispatcher?command=UpdatePostView&pNo=${requestScope.postVO.pNo}";
+		} else {
+			location.href = "${pageContext.request.contextPath}/dispatcher?command=ReadPostInfo&pNo=${requestScope.postVO.pNo}";
+		}	
+	}
+</script>

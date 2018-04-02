@@ -62,7 +62,7 @@
 		method="post">
 		<input type="hidden" name="command" value="UpdatePost"> 
 		<input type="hidden" name="pNo" value="${requestScope.postVO.pNo}">
-		<input type="hidden" id="p_lock" name="p_lock">
+		<input type="hidden" id="p_lock" name="p_lock" >
 		<table class="table">
 			<tr>
 				<td>제목&nbsp;&nbsp; <input type="text" name="pTitle"

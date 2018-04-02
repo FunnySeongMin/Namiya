@@ -72,7 +72,7 @@ public class PagingBean {
 	//현재 페이지가 속한 페이지 그룹의 시작 페이지 번호 반환
 	//ex) 페이지 그룹이 1,2,3,4 이고 현제 페이지가 3이라면 시작페이지 번호는 1이다.
 	public int getStartPageOfPageGroup() {
-		int num=this.pageCountPerPageGroup*(this.getNowPage()-1)+1;
+		int num=this.pageCountPerPageGroup*(this.getNowPageGroup()-1)+1;
 		return num;
 	}
 	//현재 페이지가 속한 그룹의 마지막 페이지 번호 반환
