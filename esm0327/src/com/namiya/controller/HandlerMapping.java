@@ -16,7 +16,6 @@ import com.namiya.controller.user.CheckIdController;
 import com.namiya.controller.user.CreateUserController;
 import com.namiya.controller.user.DeleteUserController;
 import com.namiya.controller.user.LoginController;
-import com.namiya.controller.user.MyPostList;
 import com.namiya.controller.user.TotalUserCountController;
 import com.namiya.controller.user.UpdateUserController;
 
