@@ -2,6 +2,81 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#loginForm").submit(function() {
+         $.ajax({
+            type:"post",
+            dataType:"json",
+            url:"${pageContext.request.contextPath}/dispatcher",
+            data:$("#loginForm").serialize(),
+            success:function(data){
+               if(data.flag=="fail"){//fail일 경우 ajax로 바로 처리. 아이디, 패스워드 입력폼에 셀렉터 id값 추가
+                  alert("로그인 실패! 아이디와 패스워드를 확인하세요.");
+                  $("#signin-email").val("").focus(); //로그인 실패 알림 후 기존입력값 지우고 email 입력폼에 포커스.
+                  $("#signin-password").val("");
+               }else{//로그인 성공시에는 세션값에 따라 헤더상태 메뉴가 유지되므로 여기에서 화면을 구성하는 것은 불필요.페이지 재로딩으로 처리
+                  location.href="index.jsp";
+               }
+            }//sucess
+         });//ajax
+         return false;
+      });//LoginForm submit
+      
+      //쿠키에 저장된 아이디를 가져와 입력폼에 셋팅 
+      var userInputId = getCookie("userInputId");
+      $("#signin-email").val(userInputId); 
+      
+      //체크박스 상태 변화에 따라 쿠키에 아이디를 저장 또는 삭제
+      $("#remember-me").change(function(){ 
+          if($("#remember-me").is(":checked")){                     
+              var userInputId = $("#login-email").val();
+              setCookie("userInputId", userInputId, 365);//key,value,저장기한
+          }else{ 
+              deleteCookie("userInputId");
+          }
+      });//change
+        
+      //체크된 상태에서 아이디를 입력하면 쿠키에 저장
+      $("#signin-email").keyup(function(){ 
+          if($("#remember-me").is(":checked")){ 
+              var userInputId = $("#signin-email").val();
+              setCookie("userInputId", userInputId, 365);
+          }
+      });//keyup
+
+   });//ready
+   
+   
+      //아이디 저장 위한 쿠키 처리 함수 정의 set/delete/getCookie
+      function setCookie(cookieName, value, exdays){
+          var exdate = new Date();
+          exdate.setDate(exdate.getDate() + exdays);
+          var cookieValue = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toGMTString());
+          document.cookie = cookieName + "=" + cookieValue;
+      }
+       
+      function deleteCookie(cookieName){
+          var expireDate = new Date();
+          expireDate.setDate(expireDate.getDate() - 1); //어제날짜를 쿠키 소멸날짜로 설정
+          document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+      }
+       
+      function getCookie(cookieName) {
+          cookieName = cookieName + '=';
+          var cookieData = document.cookie;
+          var start = cookieData.indexOf(cookieName);
+          var cookieValue = '';
+          if(start != -1){
+              start += cookieName.length;
+              var end = cookieData.indexOf(';', start);
+              if(end == -1)end = cookieData.length;
+              cookieValue = cookieData.substring(start, end);
+          }
+          return unescape(cookieValue);
+      }
+   
+</script>
 <div class="cd-signin-modal js-signin-modal"> <!-- this is the entire modal form, including the background -->
 		<div class="cd-signin-modal__container"> <!-- this is the container wrapper -->
 			<ul class="cd-signin-modal__switcher js-signin-modal-switcher js-signin-modal-trigger">
@@ -11,15 +86,16 @@
 
 			<div class="cd-signin-modal__block js-signin-modal-block" data-type="login">
 				<!-- 로그인폼 -->
-				<form class="cd-signin-modal__form" action="" method="post">
+				<form class="cd-signin-modal__form" id="loginForm" action="${pageContext.request.contextPath}/dispatcher" method="post">
+				<input type="hidden" name="command" value="Login">
 					<p class="cd-signin-modal__fieldset">
 						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signin-email">이메일</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signin-email" type="email" placeholder="이메일" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
+						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signin-email" name="id" type="email" placeholder="이메일" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
 
 					<p class="cd-signin-modal__fieldset">
 						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signin-password">비밀번호</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signin-password" type="password"  placeholder="비밀번호" required="required">
+						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signin-password" name="password" type="password"  placeholder="비밀번호" required="required">
 					</p>
 
 					<p class="cd-signin-modal__fieldset">
