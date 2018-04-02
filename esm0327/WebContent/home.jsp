@@ -62,7 +62,7 @@
 	
 	<!-- 푸터 -->
 	<footer class="container-fluid">
-		
+		<c:import url="import/footer.jsp"/>
 	</footer>
 </body>
 <script>
