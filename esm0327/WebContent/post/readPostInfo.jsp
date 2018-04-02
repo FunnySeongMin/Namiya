@@ -30,8 +30,10 @@ a.post {
 	<button type="button" class="btn btn-primary btn-sm"
 		onclick="location.href='dispatcher?command=ReadPostList'">목록</button>
 		<c:if test="${sessionScope.userVO.grade=='a'}">
+
 			<button type="button" class="btn btn-danger btn-sm"
 		onclick="createReply()">답변하기</button>
+
 		</c:if>
 
 </div>
