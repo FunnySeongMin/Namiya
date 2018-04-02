@@ -54,7 +54,7 @@
 		<!-- 메인 게시판 -->
 		<div class="row main">
 			<div class="col-sm-offset-2 col-sm-8">
-				<c:import url="post/readPostList.jsp"/>
+				<c:import url="${url}"/>
 			</div> <!-- col-sm-offset-2 col-sm-8 -->
 		</div> <!-- row main -->
 		
