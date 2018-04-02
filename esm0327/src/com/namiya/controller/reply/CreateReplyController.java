@@ -17,9 +17,9 @@ public class CreateReplyController implements Controller {
 		if(session==null||session.getAttribute("mvo")==null){
 			return "redirect:index.jsp";
 		}
-		int pNo=Integer.parseInt(request.getParameter(""));
-		String pTitle=request.getParameter("");
-		String pContent=request.getParameter("");
+		int pNo=Integer.parseInt(request.getParameter("pno"));
+		String pTitle=request.getParameter("atitle");
+		String pContent=request.getParameter("acontent");
 		NamiyaAnswerVO answerVO=new NamiyaAnswerVO(pNo,pTitle, pContent);
 		NamiyaDAO.getInstance().createReply(answerVO);
 		return "home.jsp";
