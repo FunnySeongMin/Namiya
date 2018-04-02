@@ -67,8 +67,6 @@ public class HandlerMapping {
 			c=new DeleteReplyController();
 		}else if(command.equals("UnansweredList")) {
 			c=new UnAnsweredListController();
-		}else if(command.equals("MyPostList")) {
-			c= new MyPostList();
 		}
 		return c;
 	}
