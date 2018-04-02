@@ -100,5 +100,5 @@ select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname
 from (select row_number() over(order by p_no desc)
 rnum, p_no, p_title, p_lock, reply, id,
 to_char(p_date,'yyyy.mm.dd') p_date from namiya_post)
-p, namiya_user u where p.id=u.id and p_content like '%꾸벅%' and rnum
+p, namiya_user u where p.id=u.id and rnum
 between 1 and 5 order by p_no desc
