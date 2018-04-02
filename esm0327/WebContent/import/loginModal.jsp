@@ -163,14 +163,14 @@
 				<p class="cd-signin-modal__message">이메일에 임시비밀번호를 발송해드리겠습니다.</p>
 				
 				<!-- 비밀번호찾기 폼 -->
-				<form class="cd-signin-modal__form">
+				<form class="cd-signin-modal__form" id="tempPasswordForm" onsubmit="return false;">
 					<p class="cd-signin-modal__fieldset">
 						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="reset-email">이메일</label>
-						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="reset-email" type="email" placeholder="E-mail" required="required">
+						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="tempEmail" type="email" placeholder="이메일" required="required">
 					</p>
 
 					<p class="cd-signin-modal__fieldset">
-						<button class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding" type="submit">비밀번호발송</button>
+						<button class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding" type="submit" id="tempPasswordSend">비밀번호발송</button>
 					</p>
 				</form> <!-- cd-signin-modal__form -->
 
@@ -231,5 +231,65 @@
 				return true;
 			}
 		})//click
+		
+		// 임시비밀번호 발송
+		$("#tempPasswordSend").click(function() {
+			var email = $("#tempEmail").val();
+			BootstrapDialog.show({
+				type : "type-info",
+				title : "알림",
+				message : "이메일로 임시비밀번호를 보내시겠습니까?",
+				closable : false,
+				 buttons: [{
+		                icon: 'glyphicon glyphicon-send',
+		                label: '발송',
+		                cssClass: 'btn-info',
+		                autospin: true,
+		                action: function(dialogRef){
+		                	passwordMailSend(email);
+		                    dialogRef.enableButtons(false);
+		                    dialogRef.setClosable(false);
+		                    dialogRef.getModalBody().html("임시비밀번호가 발송중입니다");
+		                    setTimeout(function(){
+		                    	location.href = "${pageContext.request.contextPath}/index.jsp";
+		                        dialogRef.close();
+		                    }, 3000);
+		                }
+		            }, {
+		                label: '취소',
+		                action: function(dialogRef){
+		                    dialogRef.close();
+		                }
+		            }]
+			}); // bootstrapDialog
+		}); // submit
+		
+		// 임시비밀번호 메일로 발송
+		function passwordMailSend(email) {
+			var emailC = {
+				"recipient":"charminguk2@naver.com",
+				"title":"안녕하세요 남이야잡화점의 기적입니다",
+				"contents":randomPassword(8)
+			}
+			emailjs.init("user_0CjQxIrj0fRbRXubJes54");
+			emailjs.send("oper37370_gmail_com", "namiyamail", emailC)
+			.then(function(response) {
+				console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
+			}, function(err) {
+				console.log("FAILED. error=", err); 
+			});
+		} // passwordMailSend
+		
+		// 임시비밀번호 난수 만들기
+		function randomPassword(length) {
+		    var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&1234567890";
+		    var pass = "";
+		    for (var x = 0; x < length; x++) {
+		        var i = Math.floor(Math.random() * chars.length);
+		        pass += chars.charAt(i);
+		    }
+		    return pass;
+		} // randomPassword
+		
 	});//ready
 </script>
