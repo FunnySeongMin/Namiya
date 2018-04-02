@@ -16,6 +16,7 @@ import com.namiya.controller.user.CheckIdController;
 import com.namiya.controller.user.CreateUserController;
 import com.namiya.controller.user.DeleteUserController;
 import com.namiya.controller.user.LoginController;
+import com.namiya.controller.user.LogoutController;
 import com.namiya.controller.user.TotalUserCountController;
 import com.namiya.controller.user.UpdateUserController;
 
@@ -32,6 +33,8 @@ public class HandlerMapping {
 		Controller c=null;
 		if(command.equals("Login")) {
 			c=new LoginController();
+		}else if(command.equals("Logout")) {
+			c=new LogoutController();
 		}else if(command.equals("CheckId")) {
 			c=new CheckIdController();
 		}else if(command.equals("CreateUser")) {

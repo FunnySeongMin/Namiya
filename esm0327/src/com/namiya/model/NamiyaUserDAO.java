@@ -40,8 +40,8 @@ public class NamiyaUserDAO {
 		try {
 			con = dataSource.getConnection();
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT nickname, grade");
-			sql.append("FROM namiya_user");
+			sql.append("SELECT nickname, grade ");
+			sql.append("FROM namiya_user ");
 			sql.append("WHERE id = ? AND PASSWORD = ?");
 			/*
 			SELECT nickname, grade
