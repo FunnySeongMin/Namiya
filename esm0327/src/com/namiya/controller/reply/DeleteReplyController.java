@@ -16,7 +16,7 @@ public class DeleteReplyController implements Controller {
 		if(session==null||session.getAttribute("mvo")==null){
 			return "redirect:index.jsp";
 		}
-		int pno=Integer.parseInt(request.getParameter(""));
+		int pno=Integer.parseInt(request.getParameter("pno"));
 		NamiyaDAO.getInstance().deleteReply(pno);
 		return "index.jsp";
 	}

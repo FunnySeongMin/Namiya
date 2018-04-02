@@ -17,10 +17,10 @@ public class UpdateReplyController implements Controller {
 			return "redirect:index.jsp";
 		}
 		int pno=Integer.parseInt(request.getParameter(""));
-		String aTitle=request.getParameter("");
-		String aContent=request.getParameter("");
+		String aTitle=request.getParameter("atitle");
+		String aContent=request.getParameter("acontent");
 		NamiyaDAO.getInstance().updateReply(pno,aTitle,aContent);
-		return "";
+		return "dispatcher?command=ReadReply?pno="+pno;
 	}
 
 }

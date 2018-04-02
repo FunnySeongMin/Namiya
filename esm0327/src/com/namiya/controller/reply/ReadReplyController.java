@@ -17,9 +17,10 @@ public class ReadReplyController implements Controller {
 		if(session==null||session.getAttribute("mvo")==null){
 			return "redirect:index.jsp";
 		}
-		int pno=Integer.parseInt(request.getParameter(""));
+		int pno=Integer.parseInt(request.getParameter("pno"));
 		NamiyaAnswerVO vo=NamiyaDAO.getInstance().readReply(pno);
-		request.setAttribute("url", "");
+		request.setAttribute("avo", vo);
+		request.setAttribute("url", "replyview.jsp");
 		return "index.jsp";
 	}
 

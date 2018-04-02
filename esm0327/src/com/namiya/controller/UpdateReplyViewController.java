@@ -15,11 +15,11 @@ public class UpdateReplyViewController implements Controller {
 		if(session==null||session.getAttribute("mvo")==null){
 			return "redirect:index.jsp";
 		}
-		int pno=Integer.parseInt(request.getParameter(""));
+		int pno=Integer.parseInt(request.getParameter("pno"));
 		NamiyaAnswerVO vo=NamiyaDAO.getInstance().getUpdateAnswerView(pno);
-		request.setAttribute("", vo);
-		
-		return null;
+		request.setAttribute("avo", vo);
+		request.setAttribute("url", "/reply/replyupdateview.jsp");
+		return "home.jsp";
 	}
 
 }
