@@ -3,7 +3,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#cancel").submit(function(){
-		location.href="home.jsp";
+		location.href="index.jsp";
 	});
 });
 </script>
