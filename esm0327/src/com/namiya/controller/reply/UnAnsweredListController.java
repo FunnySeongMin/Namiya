@@ -33,7 +33,7 @@ public class UnAnsweredListController implements Controller {
 		ListVO vo=new ListVO(list, pagingBean);
 		System.out.println(list.size());
 		request.setAttribute("list", vo);
-		//request.setAttribute("url", "/post/readPostList.jsp");
+		request.setAttribute("url", "/post/readPostList.jsp");
 		return "home.jsp";
 	}
 

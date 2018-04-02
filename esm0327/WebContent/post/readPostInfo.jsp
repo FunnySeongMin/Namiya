@@ -31,14 +31,30 @@ a.post {
 		onclick="location.href='dispatcher?command=ReadPostList'">목록</button>
 		<c:if test="${sessionScope.userVO.grade=='a'}">
 			<button type="button" class="btn btn-danger btn-sm"
-		onclick="location.href='#'">답변하기</button>
+		onclick="createReply()">답변하기</button>
 		</c:if>
 
 </div>
+<div class="accordion" id="accordion2">
+	<div class="accordion-group">
+		<div class="accordion-heading">
 
-	<div id="replyview"><!-- 답글 보기 -->
-			<c:import url="/reply/replyview.jsp"/>
-	</div><!-- 답글 보기 -->
+			<a class="accordion-toggle" data-toggle="collapse"
+				data-parent="#accordion2" href="#collapseOne"> 
+				 Collapsible Group Item #1
+			</a>
+		</div>
+		<div id="collapseOne" class="accordion-body collapse">
+			<div class="accordion-inner"><c:if test="requestScope.postVO.reply==1">
+		<div id="replyview"><!-- 답글 보기 -->
+				<c:import url="/reply/replyview.jsp"/>
+		</div><!-- 답글 보기 -->
+	</c:if>
+	</div>
+		</div>
+	</div>
+</div>
+
 		<div id="replyupdateview"><!-- 답글 수정하기 -->
 			<c:import url="/reply/replyupdateview.jsp"/>
 	</div><!-- 답글 수정하기 -->
@@ -49,6 +65,14 @@ a.post {
 <br>
 
 <script type="text/javascript">
+
+	$(document).ready(function() {
+		$("#replyupdateview").hide(); 
+	})
+	
+	function createReply() {
+		$("#replyupdateview").show();
+	}
 	function deleteConfirm() {
 		if (confirm("게시글을 삭제하시겠습니까?")) {
 			location.href = "${pageContext.request.contextPath}/dispatcher?command=DeletePost&pNo=${requestScope.postVO.pNo}";
