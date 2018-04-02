@@ -45,9 +45,41 @@ public class NamiyaDAO {
 	}//method
 
 	//pagingBean에 따른 row넘버 기준으로 게시물 목록을 반환하는 메서드
-	public ArrayList<NamiyaPostVO> readPostList(PagingBean pagingBean) {
-		
-		return null;
+	public ArrayList<NamiyaPostVO> readPostList(PagingBean pagingBean) throws SQLException {
+		ArrayList<NamiyaPostVO> list=new ArrayList<NamiyaPostVO>();
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=dataSource.getConnection();
+			StringBuilder sql=new StringBuilder();
+			sql.append("select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname ");
+			sql.append("from (select row_number() over(order by p_no desc) ");
+			sql.append("rnum, p_no, p_title, p_lock, reply, id, ");
+			sql.append("to_char(p_date,'yyyy.mm.dd') p_date from namiya_post) ");
+			sql.append("p, namiya_user u where p.id=u.id and rnum ");
+			sql.append("between ? and ? order by p_no desc");
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setInt(1, pagingBean.getStartRowNumber());
+			pstmt.setInt(2, pagingBean.getEndRowNumber());
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				NamiyaPostVO pvo=new NamiyaPostVO();
+				pvo.setpNo(rs.getInt(1));
+				pvo.setpTitle(rs.getString(2));
+				pvo.setpDate(rs.getString(3));
+				pvo.setLock(rs.getString(4));
+				pvo.setReply(rs.getInt(5));
+				NamiyaUserVO uvo=new NamiyaUserVO();
+				uvo.setId(rs.getString(6));
+				uvo.setNickName(rs.getString(7));
+				pvo.setUserVO(uvo);
+				list.add(pvo);
+			}
+		} finally {
+			closeAll(rs, pstmt, con);
+		}		
+		return list;
 	}//method
 
 	//내가 작성한 글 총 개수를 반환하는 메서드
@@ -106,9 +138,22 @@ public class NamiyaDAO {
 	}//method
 	
 	//총 게시물 수를 반환하는 메서드
-	public int getTotalPostCount() {
-		
-		return 0;
+	public int getTotalPostCount() throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int count=0;
+		try {
+			con=dataSource.getConnection();
+			String sql="select count(*) from namiya_post";
+			pstmt=con.prepareStatement(sql);
+			rs=pstmt.executeQuery();
+			if(rs.next())
+				count=rs.getInt(1);
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		return count;
 	}//method
 
 	//답변이 없는 게시글의 목록을 가져오는 메서드

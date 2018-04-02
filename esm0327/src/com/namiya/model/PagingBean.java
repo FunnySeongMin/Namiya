@@ -16,54 +16,86 @@ public class PagingBean {
 		super();
 		this.totalPostCount = totalPostCount;
 	}
-	public PagingBean(int nowPage, int totalPostCount) {
+	public PagingBean(int totalPostCount, int nowPage) {
 		super();
-		this.nowPage = nowPage;
 		this.totalPostCount = totalPostCount;
+		this.nowPage = nowPage;
 	}
 	public int getNowPage() {
 		return nowPage;
 	}
 	//현재 페이지 번호에 해당하는 시작 게시물의 row number를 반환
 	public int getStartRowNumber() {
-		return 0;
+		return ((nowPage-1)*postCountPerPage)+1;
 	}
 	//현제 페이지 번호에 해당하는 마지막 게시물의 row number를 반환
 	public int getEndRowNumber() {
-		return 0;
+		int endRowNumber=nowPage*postCountPerPage;
+		if(totalPostCount<endRowNumber)
+			endRowNumber=totalPostCount;
+		return endRowNumber;
 	}
 	//총 페이지 수를 반환
 	public int getTotalPage() {
-		return 0;
+		int num=this.totalPostCount % this.postCountPerPage;
+		int totalPage=0;
+		if(num==0) {
+			totalPage=this.totalPostCount / this.postCountPerPage;
+		}else {
+			totalPage=this.totalPostCount / this.postCountPerPage+1;
+		}
+		return totalPage;
 	}
 	//총 페이지 그룹의 수 반환
 	public int getTotalPageGroup() {
-		return 0;
+		int num=this.getTotalPage() % this.pageCountPerPageGroup;
+		int totalPageGroup=0;
+		if(num==0) {
+			totalPageGroup=this.getTotalPage() / this.pageCountPerPageGroup;
+		}else {
+			totalPageGroup=this.getTotalPage() / this.pageCountPerPageGroup+1;
+		}
+		return totalPageGroup;
 	}
 	//현재 페이지가 속한 페이지 그룹의 번호를 반환
 	//페이지 그룹 : 목록 아래에 나오는 한 줄의 페이지들이 하나의 페이지 그룹이다.
 	public int getNowPageGroup() {
-		return 0;
+		int num=this.nowPage % this.pageCountPerPageGroup;
+		int nowPageGroup=0;
+		if(num==0) {
+			nowPageGroup=this.nowPage / this.pageCountPerPageGroup;
+		}else {
+			nowPageGroup=this.nowPage / this.pageCountPerPageGroup+1;
+		}
+		return nowPageGroup;
 	}
 	//현재 페이지가 속한 페이지 그룹의 시작 페이지 번호 반환
 	//ex) 페이지 그룹이 1,2,3,4 이고 현제 페이지가 3이라면 시작페이지 번호는 1이다.
 	public int getStartPageOfPageGroup() {
-		return 0;
+		int num=this.pageCountPerPageGroup*(this.getNowPage()-1)+1;
+		return num;
 	}
 	//현재 페이지가 속한 그룹의 마지막 페이지 번호 반환
 	public int getEndPageOfPageGroup() {
-		return 0;
+		int num=this.getNowPageGroup()*this.pageCountPerPageGroup;
+		if(this.getTotalPage()<num)
+			num=this.getTotalPage();
+		return num;
 	}
 	//이전 페이지 그룹이 있는지 확인한다. 결과값은 boolean이다.
 	public boolean isPreviousPageGroup() {
 		boolean flag=false;
-		
+		if(this.getNowPageGroup()>1) {			
+			flag=true;
+		}
 		return flag;
 	}
 	//파음 페이지 그룹이 있는지 확인한다.
 	public boolean isNextPageGroup() {
 		boolean flag=false;
-		
+		if(this.getNowPageGroup()<this.getTotalPageGroup()) {			
+			flag=true;
+		}
 		return flag;
 	}
 	public static void main(String args[]) {
