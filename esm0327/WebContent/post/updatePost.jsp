@@ -58,8 +58,7 @@
 </head>
 
 <body>
-	<form action="${pageContext.request.contextPath}/dispatcher"
-		method="post">
+	<form action="${pageContext.request.contextPath}/dispatcher" method="post">
 		<input type="hidden" name="command" value="UpdatePost"> 
 		<input type="hidden" name="pNo" value="${requestScope.postVO.pNo}">
 		<input type="hidden" id="p_lock" name="p_lock" value="${requestScope.postVO.lock }">
