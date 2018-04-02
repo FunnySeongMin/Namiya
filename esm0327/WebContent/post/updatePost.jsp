@@ -58,11 +58,10 @@
 </head>
 
 <body>
-	<form action="${pageContext.request.contextPath}/dispatcher"
-		method="post">
+	<form action="${pageContext.request.contextPath}/dispatcher" method="post">
 		<input type="hidden" name="command" value="UpdatePost"> 
 		<input type="hidden" name="pNo" value="${requestScope.postVO.pNo}">
-		<input type="hidden" id="p_lock" name="p_lock">
+		<input type="hidden" id="p_lock" name="p_lock" value="${requestScope.postVO.lock}">
 		<table class="table">
 			<tr>
 				<td>제목&nbsp;&nbsp; <input type="text" name="pTitle"
