@@ -35,9 +35,29 @@ public class NamiyaDAO {
 	}	
 
 	//게시글 등록 메서드
-	public void createPost(NamiyaPostVO postVO) {
-		
-	}//method
+	public void createPost(NamiyaPostVO postVO) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = dataSource.getConnection();
+			String sql = "INSERT INTO namiya_post(p_no, p_title, p_content, p_lock, id) "
+					+ "VALUES(NAMIYA_POST_SEQ.NEXTVAL, ?, ?, ?, ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, postVO.getpTitle());
+			pstmt.setString(2, postVO.getpContent());
+			pstmt.setString(3, postVO.getLock());
+			pstmt.setString(4, postVO.getUserVO().getId());
+			pstmt.executeUpdate();
+			pstmt.close();
+			pstmt = con.prepareStatement("select NAMIYA_POST_SEQ.CURRVAL from dual");
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				postVO.setpNo(rs.getInt(1));
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+	}// method
 
 	//답변 등록 메서드
 	public void createReply(NamiyaAnswerVO answerVO) throws SQLException {
@@ -123,11 +143,30 @@ public class NamiyaDAO {
 		return count;
 	}//method
 
-	//전달받은 글번호에 맞는 글의 내용을 반환하는 메서드
-	public NamiyaPostVO readPostInfo(int pno) {
-		// TODO Auto-generated method stub
-		return null;
-	}//method
+	// 전달받은 글번호에 맞는 글의 내용을 반환하는 메서드
+		public NamiyaPostVO readPostInfo(int pno) throws SQLException {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			NamiyaPostVO postVO = null;
+			NamiyaUserVO userVO = null;
+			try {
+				con = dataSource.getConnection();
+				String sql = "SELECT p_no, p_title, p_content, p_date, p_lock, reply, u.nickname, u.id "
+						+ "FROM namiya_post p, namiya_user u WHERE u.id = p.id and p_no=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, pno);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					userVO = new NamiyaUserVO(rs.getString(8), rs.getString(7), null);
+					postVO = new NamiyaPostVO(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+							rs.getString(5), rs.getInt(6), userVO);
+				}
+			} finally {
+				closeAll(rs, pstmt, con);
+			}
+			return postVO;
+		}
 	
 	//전달받은 글번호에 맞는 답변의 내용을 반환하는 메서드
 	public NamiyaAnswerVO readReply(int pno) throws SQLException {
@@ -152,10 +191,24 @@ public class NamiyaDAO {
 		return vo;
 	}//method
 
-	//게시글의 내용을 수정하는 메서드
-	public void updatePost(int pno) {
-		
-	}//method
+	// 게시글의 내용을 수정하는 메서드
+		public void updatePost(int pNo, String pTitle, String pContent, String lock) throws SQLException {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				con = dataSource.getConnection();
+				String sql = "UPDATE namiya_post SET p_title = ?, p_content = ?, p_lock=? WHERE p_no = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, pTitle);
+				pstmt.setString(2, pContent);
+				pstmt.setString(3, lock);
+				pstmt.setInt(4, pNo);
+				pstmt.executeUpdate();
+			} finally {
+				closeAll(rs, pstmt, con);
+			}
+		}// method
 
 	//답변의 내용을 수정하는 메서드
 	public void updateReply(int pno, String aTitle, String aContent) throws SQLException {
@@ -174,10 +227,21 @@ public class NamiyaDAO {
 		}
 	}//method
 
-	//게시글을 삭제하는 메서드
-	public void deletePost(int pno) {
-		
-	}//method
+	// 게시글을 삭제하는 메서드
+		public void deletePost(int pno) throws SQLException {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			try {
+				con = dataSource.getConnection();
+				String sql = "DELETE FROM namiya_post WHERE p_no = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, pno);
+				pstmt.executeUpdate();
+			} finally {
+				closeAll(rs, pstmt, con);
+			}
+		}// method
 
 	//답변을 삭제하는 메서드
 	public void deleteReply(int pno) throws SQLException {
@@ -353,6 +417,122 @@ public class NamiyaDAO {
 		}
 		return list;
 	}
+	//제목으로 검색
+		public ArrayList<NamiyaPostVO> readPostByTitle(String keyword, PagingBean pagingBean) throws SQLException {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			ArrayList<NamiyaPostVO> list = new ArrayList<NamiyaPostVO>();
+			try {
+				con = dataSource.getConnection();
+				StringBuilder sql=new StringBuilder();
+				sql.append("select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname ");
+				sql.append("from (select row_number() over(order by p_no desc) ");
+				sql.append("rnum, p_no, p_title, p_lock, reply, id, ");
+				sql.append("to_char(p_date,'yyyy.mm.dd') p_date from namiya_post) ");
+				sql.append("p, namiya_user u where p.id=u.id and p_title like '%' || ? || '%' and rnum ");
+				sql.append("between ? and ? order by p_no desc");
+				pstmt = con.prepareStatement(sql.toString());
+				pstmt.setString(1, keyword);
+				pstmt.setInt(2, pagingBean.getStartRowNumber());
+				pstmt.setInt(3, pagingBean.getEndRowNumber());
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					NamiyaPostVO pvo=new NamiyaPostVO();
+					pvo.setpNo(rs.getInt(1));
+					pvo.setpTitle(rs.getString(2));
+					pvo.setpDate(rs.getString(3));
+					pvo.setLock(rs.getString(4));
+					pvo.setReply(rs.getInt(5));
+					NamiyaUserVO uvo=new NamiyaUserVO();
+					uvo.setId(rs.getString(6));
+					uvo.setNickName(rs.getString(7));
+					pvo.setUserVO(uvo);
+					list.add(pvo);
+				}
+			} finally {
+				closeAll(rs, pstmt, con);
+			}
+			return list;
+		}// method
+		
+		//작성자로 검색
+			public ArrayList<NamiyaPostVO> readPostByNickName(String keyword, PagingBean pagingBean) throws SQLException {
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+				ArrayList<NamiyaPostVO> list = new ArrayList<NamiyaPostVO>();
+				try {
+					con = dataSource.getConnection();
+					StringBuilder sql=new StringBuilder();
+					sql.append("select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname ");
+					sql.append("from (select row_number() over(order by p_no desc) ");
+					sql.append("rnum, p_no, p_title, p_lock, reply, id, ");
+					sql.append("to_char(p_date,'yyyy.mm.dd') p_date from namiya_post) ");
+					sql.append("p, namiya_user u where p.id=u.id and u.nickname=? and rnum ");
+					sql.append("between ? and ? order by p_no desc");
+					pstmt = con.prepareStatement(sql.toString());
+					pstmt.setString(1, keyword);
+					pstmt.setInt(2, pagingBean.getStartRowNumber());
+					pstmt.setInt(3, pagingBean.getEndRowNumber());
+					rs = pstmt.executeQuery();
+					while (rs.next()) {
+						NamiyaPostVO pvo=new NamiyaPostVO();
+						pvo.setpNo(rs.getInt(1));
+						pvo.setpTitle(rs.getString(2));
+						pvo.setpDate(rs.getString(3));
+						pvo.setLock(rs.getString(4));
+						pvo.setReply(rs.getInt(5));
+						NamiyaUserVO uvo=new NamiyaUserVO();
+						uvo.setId(rs.getString(6));
+						uvo.setNickName(rs.getString(7));
+						pvo.setUserVO(uvo);
+						list.add(pvo);
+					}
+				} finally {
+					closeAll(rs, pstmt, con);
+				}
+				return list;
+			}// method
+			
+			//글 내용으로 검색
+					public ArrayList<NamiyaPostVO> readPostByContent(String keyword, PagingBean pagingBean) throws SQLException {
+						Connection con = null;
+						PreparedStatement pstmt = null;
+						ResultSet rs = null;
+						ArrayList<NamiyaPostVO> list = new ArrayList<NamiyaPostVO>();
+						try {
+							con = dataSource.getConnection();
+							StringBuilder sql=new StringBuilder();
+							sql.append("select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname, p.p_content ");
+							sql.append("from (select row_number() over(order by p_no desc) ");
+							sql.append("rnum, p_no, p_title, p_lock, reply, id, p_content, ");
+							sql.append("to_char(p_date,'yyyy.mm.dd') p_date from namiya_post) ");
+							sql.append("p, namiya_user u where p.id=u.id and p_content like '%' || ? || '%' and rnum ");
+							sql.append("between ? and ? order by p_no desc");
+							pstmt = con.prepareStatement(sql.toString());
+							pstmt.setString(1, keyword);
+							pstmt.setInt(2, pagingBean.getStartRowNumber());
+							pstmt.setInt(3, pagingBean.getEndRowNumber());
+							rs = pstmt.executeQuery();
+							while (rs.next()) {
+								NamiyaPostVO pvo=new NamiyaPostVO();
+								pvo.setpNo(rs.getInt(1));
+								pvo.setpTitle(rs.getString(2));
+								pvo.setpDate(rs.getString(3));
+								pvo.setLock(rs.getString(4));
+								pvo.setReply(rs.getInt(5));
+								NamiyaUserVO uvo=new NamiyaUserVO();
+								uvo.setId(rs.getString(6));
+								uvo.setNickName(rs.getString(7));
+								pvo.setUserVO(uvo);
+								list.add(pvo);
+							}
+						} finally {
+							closeAll(rs, pstmt, con);
+						}
+						return list;
+					}// method
 }
 
 	

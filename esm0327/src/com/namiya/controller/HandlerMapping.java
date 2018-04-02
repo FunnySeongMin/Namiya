@@ -1,11 +1,14 @@
 package com.namiya.controller;
 
 import com.namiya.controller.post.CreatePostController;
+import com.namiya.controller.post.CreatePostViewController;
 import com.namiya.controller.post.DeletePostController;
 import com.namiya.controller.post.ReadMyPostListController;
 import com.namiya.controller.post.ReadPostInfoController;
 import com.namiya.controller.post.ReadPostListController;
+import com.namiya.controller.post.SearchController;
 import com.namiya.controller.post.UpdatePostController;
+import com.namiya.controller.post.UpdatePostViewController;
 import com.namiya.controller.reply.CreateReplyController;
 import com.namiya.controller.reply.DeleteReplyController;
 import com.namiya.controller.reply.ReadReplyController;
@@ -47,6 +50,8 @@ public class HandlerMapping {
 			c=new TotalUserCountController();
 		}else if(command.equals("CreatePost")) {
 			c=new CreatePostController();
+		}else if(command.equals("CreatePostView")) {
+			c=new CreatePostViewController();
 		}else if(command.equals("CreateReply")) {
 			c=new CreateReplyController();
 		}else if(command.equals("ReadPostList")) {
@@ -59,6 +64,8 @@ public class HandlerMapping {
 			c=new ReadReplyController();
 		}else if(command.equals("UpdatePost")) {
 			c=new UpdatePostController();
+		}else if(command.equals("UpdatePostView")) {
+			c=new UpdatePostViewController();
 		}else if(command.equals("UpdateReplyView")) {
 			c=new UpdateReplyViewController();
 		}else if(command.equals("UpdateReply")) {
@@ -69,6 +76,8 @@ public class HandlerMapping {
 			c=new DeleteReplyController();
 		}else if(command.equals("UnansweredList")) {
 			c=new UnAnsweredListController();
+		}else if(command.equals("Search")) {
+			c=new SearchController();
 		}
 		return c;
 	}

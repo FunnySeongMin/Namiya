@@ -14,14 +14,17 @@ public class CreatePostController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//게시글을 등록시키고 그 글의 번호를 반환받아 보여주는 컨트롤러
-		String pTitle=request.getParameter("");
-		String pContent=request.getParameter("");
-		String lock=request.getParameter("");
 		HttpSession session=request.getSession(false);
-		NamiyaUserVO userVO=(NamiyaUserVO) session.getAttribute("");
-		NamiyaPostVO	postVO=new NamiyaPostVO(pTitle, pContent, lock, userVO);
+		if(session == null || session.getAttribute("userVO") == null){
+			return "redirect:index.jsp";
+		}
+		String pTitle=request.getParameter("pTitle");
+		String pContent=request.getParameter("pContent");
+		String lock=request.getParameter("p_lock");
+		NamiyaUserVO userVO=(NamiyaUserVO)session.getAttribute("userVO");
+		NamiyaPostVO postVO=new NamiyaPostVO(pTitle, pContent, lock, userVO);
 		NamiyaDAO.getInstance().createPost(postVO);
-		return null;
+		String url = "redirect:dispatcher?command=ReadPostInfo&pNo="+postVO.getpNo(); 
+		return url;
 	}
-
 }
