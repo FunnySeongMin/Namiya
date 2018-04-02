@@ -37,7 +37,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.9/js/bootstrap-dialog.min.js"></script>
 <!-- Bootstrap 3 has typeahead optionally -->
 <script src="assets/js/typeahead.min.js"></script>
-<title>title</title>
+<!-- emailJS -->
+<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<title>Namiya</title>
 </head>
 <body>
 	<!-- 헤더 -->
@@ -46,7 +48,7 @@
 	<div class="container-fluid">
 		<!-- 메인 이미지 -->
 		<div class="row img">
-			<div class="col-sm-offset-1 col-sm-9 text-center">
+			<div class="col-sm-offset-1 col-sm-9 text-center text-center animated flipInX">
 				<img src="assets/img/board.jpg">
 			</div> <!-- col-sm-offset-1 col-sm-9 text-center -->
 		</div> <!-- row img -->
