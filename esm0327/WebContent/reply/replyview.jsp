@@ -12,8 +12,7 @@
 </script>
 <table>
 	<tr>
-		<th>제목</th>
-		<th>${requestScope.avo.aTitle }</th>
+		<th colspan="2">제목 :  ${requestScope.avo.aTitle }		등록일 : ${requestScope.avo.aDate }</th>
 	</tr>
 	<tr>
 		<th>내용</th>

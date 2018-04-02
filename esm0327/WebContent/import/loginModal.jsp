@@ -40,12 +40,13 @@
 				<form id="register" action="dispatcher" class="cd-signin-modal__form">
 				<input type="hidden" name="command" value="CreateUser">
 					<!-- 이메일 -->
+					<span id="checkId"></span>
+					<div>
 					<p class="cd-signin-modal__fieldset">
-					<span id="checkId"></span><br>
 						<label class="cd-signin-modal__label cd-signin-modal__label--email cd-signin-modal__label--image-replace" for="signup-email">이메일</label>
 						<input name="userId" class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-email" type="email" placeholder="이메일" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
-					
+					</div>
 					<!-- 비밀번호 -->
 					<p class="cd-signin-modal__fieldset">
 						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">비밀번호</label>
@@ -53,11 +54,13 @@
 					</p>
 					
 					<!-- 비밀번호 확인 -->
+					<span id="checkPass"></span>
+					<div>
 					<p class="cd-signin-modal__fieldset">
-					<span id="checkPass"></span><br>
 						<label class="cd-signin-modal__label cd-signin-modal__label--password cd-signin-modal__label--image-replace" for="signup-password">비밀번호확인</label>
 						<input class="cd-signin-modal__input cd-signin-modal__input--full-width cd-signin-modal__input--has-padding cd-signin-modal__input--has-border" id="signup-password2" type="password"  placeholder="비밀번호확인" required="required" onkeyup="this.value=this.value.replace(/\s/g,'')">
 					</p>
+					</div>
 					
 					<!-- 닉네임 -->
 					<p class="cd-signin-modal__fieldset">

@@ -158,30 +158,33 @@ public class NamiyaDAO {
 	}//method
 
 	//답변이 없는 게시글의 목록을 가져오는 메서드
-	public ArrayList<NamiyaPostVO> unAnswerList(PagingBean pagingBean) throws SQLException {
-		ArrayList<NamiyaPostVO> list=new ArrayList<NamiyaPostVO>();
+	public ArrayList<NamiyaPostVO> unAnsweredList(PagingBean pagingBean) throws SQLException {
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
+		ArrayList<NamiyaPostVO> list=new ArrayList<NamiyaPostVO>();
 		try {
 			con=dataSource.getConnection();
 			StringBuilder sql=new StringBuilder();
-			sql.append("select p.p_no,p.reply,u.nickname,p.p_title,p.timeposted ");
-			sql.append("from (select row_number() over(order by p_no desc) as rnu,p_no,p_title,");
-			sql.append("id,to_char(p.p_date,'yyyy.mm.dd') timeposted from namiya_post) p ");
-			sql.append(", namiya_user where u.id=p.id and p.reply=0 and rnum between ? and ? ");
+			sql.append("select p.p_no,p.p_title,p.timeposted,p.p_lock,u.nickname ");
+			sql.append("from (select row_number() over(order by p_no desc) as rnum,p_no,p_title,p_lock,reply, ");
+			sql.append("id,to_char(p_date,'yyyy.mm.dd') timeposted from namiya_post) p ");
+			sql.append(", namiya_user u where u.id=p.id and p.reply=0 and rnum between ? and ? ");
 			pstmt=con.prepareStatement(sql.toString());
-			pstmt.setInt(1, pagingBean.getStartRowNumber());
-			pstmt.setInt(2, pagingBean.getEndRowNumber());
+			//pstmt.setInt(1, pagingBean.getStartRowNumber());
+			//pstmt.setInt(2, pagingBean.getEndRowNumber());
+			pstmt.setInt(1, 1);
+			pstmt.setInt(2, 5);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
+				NamiyaUserVO vo=new NamiyaUserVO();
+				vo.setNickName(rs.getString(5));
 				NamiyaPostVO pvo=new NamiyaPostVO();
 				pvo.setpNo(rs.getInt(1));
-				pvo.setReply(rs.getInt(2));
-				pvo.setpTitle(rs.getString(4));
-				pvo.setpDate(rs.getString(5));
-				NamiyaUserVO uvo=new NamiyaUserVO();
-				uvo.setNickName(rs.getString(3));
+				pvo.setpTitle(rs.getString(2));
+				pvo.setpDate(rs.getString(3));
+				pvo.setLock(rs.getString(4));
+				pvo.setUserVO(vo);
 				list.add(pvo);
 			}
 		}finally {
