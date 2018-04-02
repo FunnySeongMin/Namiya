@@ -40,6 +40,8 @@ CREATE TABLE namiya_answer (
 -- 관리자 가입
 INSERT INTO namiya_user 
 VALUES('ukyi@naver.com','123','욱이','a'); 
+INSERT INTO namiya_user 
+VALUES('jobim1225@naver.com','1234','배부른 길고양이','a'); 
 
 -- 회원 가입
 INSERT INTO namiya_user(id, password, nickname ) 
