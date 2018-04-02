@@ -267,7 +267,7 @@
 		// 임시비밀번호 메일로 발송
 		function passwordMailSend(email) {
 			var emailC = {
-				"recipient":"charminguk2@naver.com",
+				"recipient":email,
 				"title":"안녕하세요 남이야잡화점의 기적입니다",
 				"contents":randomPassword(8)
 			}
