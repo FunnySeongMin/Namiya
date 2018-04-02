@@ -122,16 +122,16 @@ a.post {
 
 	<!-- 페이징버튼 -->
 	<ul class="pagination pagination">
-		<!-- 페이징빈 코드 줄여서 변수에 담음 : pb -->
+		<%-- 페이징빈 코드 줄여서 변수에 담음 : pb--%>
 		<c:set var="pb" value="${requestScope.listvo.pagingBean}"></c:set>
-		<!-- 이전 페이지로 돌아가기 -->
+		<%--이전 페이지로 돌아가기 --%>
 		<c:if test="${pb.previousPageGroup}">		
-			<li><a href="dispatcher?command=ReadPostList&pageNo=${pb.startPageOfPageGroup-1 }">«</a></li>
+			<li><a href="dispatcher?command=ReadPostList&pageNo=${pb.startPageOfPageGroup-1}">«</a></li>
 		</c:if>
-		<!-- 페이지그룹 시작번호부터 끝번호 및 현재 페이지 -->
+		<%--페이지그룹 시작번호부터 끝번호 및 현재 페이지 --%>
 		<c:forEach var="page" begin="${pb.startPageOfPageGroup}" end="${pb.endPageOfPageGroup}">
 		<c:choose>
-			<c:when test="${pb.nowPage!=page }">
+			<c:when test="${pb.nowPage!=page}">
 				<li><a href="dispatcher?command=ReadPostList&pageNo=${page}">${page}</a></li>
 			</c:when>
 			<c:otherwise>
@@ -139,9 +139,9 @@ a.post {
 			</c:otherwise>
 		</c:choose>
 		</c:forEach>
-		<!-- 다음페이지로 넘어가기 -->
+		<%-- 다음페이지로 넘어가기  --%>
 		<c:if test="${pb.nextPageGroup}">		
-			<li><a href="dispatcher?command=ReadPostList&pageNo=${pb.endPageOfPageGroup+1 }">»</a></li>
+			<li><a href="dispatcher?command=ReadPostList&pageNo=${pb.endPageOfPageGroup+1}">»</a></li>
 		</c:if>
 	</ul>
 </div>
