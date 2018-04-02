@@ -22,6 +22,7 @@ import com.namiya.controller.user.LoginController;
 import com.namiya.controller.user.LogoutController;
 import com.namiya.controller.user.TotalUserCountController;
 import com.namiya.controller.user.UpdateUserController;
+import com.namiya.controller.user.UpdateUserViewController;
 
 public class HandlerMapping {
 	private static HandlerMapping instance=new HandlerMapping();
@@ -44,6 +45,8 @@ public class HandlerMapping {
 			c=new CreateUserController();
 		}else if(command.equals("UpdateUser")) {
 			c=new UpdateUserController();
+		}else if(command.equals("UpdateUserView")) {
+			c=new UpdateUserViewController();
 		}else if(command.equals("DeleteUser")) {
 			c=new DeleteUserController();
 		}else if(command.equals("TotalUserCount")) {
