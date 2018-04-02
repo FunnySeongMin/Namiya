@@ -11,10 +11,12 @@ import com.namiya.controller.reply.DeleteReplyController;
 import com.namiya.controller.reply.ReadReplyController;
 import com.namiya.controller.reply.UnAnsweredListController;
 import com.namiya.controller.reply.UpdateReplyController;
+import com.namiya.controller.reply.UpdateReplyViewController;
 import com.namiya.controller.user.CheckIdController;
 import com.namiya.controller.user.CreateUserController;
 import com.namiya.controller.user.DeleteUserController;
 import com.namiya.controller.user.LoginController;
+import com.namiya.controller.user.MyPostList;
 import com.namiya.controller.user.TotalUserCountController;
 import com.namiya.controller.user.UpdateUserController;
 
@@ -65,6 +67,8 @@ public class HandlerMapping {
 			c=new DeleteReplyController();
 		}else if(command.equals("UnansweredList")) {
 			c=new UnAnsweredListController();
+		}else if(command.equals("MyPostList")) {
+			c= new MyPostList();
 		}
 		return c;
 	}

@@ -1,4 +1,4 @@
-package com.namiya.controller.reply;
+package com.namiya.controller.user;
 
 import java.util.ArrayList;
 
@@ -10,30 +10,31 @@ import com.namiya.controller.Controller;
 import com.namiya.model.ListVO;
 import com.namiya.model.NamiyaDAO;
 import com.namiya.model.NamiyaPostVO;
+import com.namiya.model.NamiyaUserVO;
 import com.namiya.model.PagingBean;
 
-public class UnAnsweredListController implements Controller {
+public class MyPostList implements Controller {
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		//답변이 달리지 않은 목록을 뽑아낸다. 설명은 겹치는 부분이 많아 생략!
 		HttpSession session=request.getSession(false);
-		if(session==null||session.getAttribute("userVO")==null){
+		if(session==null||session.getAttribute("mvo")==null){
 			return "redirect:index.jsp";
 		}
-		int totalCount=NamiyaDAO.getInstance().getUnAnsweredPostCount();
+		NamiyaUserVO vo=(NamiyaUserVO) session.getAttribute("userVO");
+		String id=vo.getId();
+		int myPostCount=NamiyaDAO.getInstance().readMyPostCount(id);
 		String nowPage=request.getParameter("pageNo");
 		PagingBean pagingBean=null;
 		if(nowPage==null){
-			pagingBean=new PagingBean(totalCount);
+			pagingBean=new PagingBean(myPostCount);
 		}else{
-			pagingBean=new PagingBean(totalCount,Integer.parseInt(nowPage));
+			pagingBean=new PagingBean(myPostCount,Integer.parseInt(nowPage));
 		}
-		ArrayList<NamiyaPostVO> list=NamiyaDAO.getInstance().unAnsweredList(pagingBean);
-		ListVO vo=new ListVO(list, pagingBean);
-		System.out.println(list.size());
-		request.setAttribute("list", vo);
-		//request.setAttribute("url", "/post/readPostList.jsp");
+		ArrayList<NamiyaPostVO> list=NamiyaDAO.getInstance().myPostList(id,pagingBean);
+		ListVO lvo=new ListVO(list, pagingBean);
+		request.setAttribute("", lvo);
+		request.setAttribute("url", "");
 		return "home.jsp";
 	}
 

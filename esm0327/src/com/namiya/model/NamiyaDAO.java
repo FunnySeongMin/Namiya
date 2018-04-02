@@ -68,9 +68,27 @@ public class NamiyaDAO {
 	}//method
 
 	//내가 작성한 글 총 개수를 반환하는 메서드
-	public int readMyPostCount() {
-		
-		return 0;
+	public int readMyPostCount(String id) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int count=0;
+		try {
+			con=dataSource.getConnection();
+			StringBuilder sql=new StringBuilder();
+			sql.append("SELECT count(*) ");
+			sql.append("FROM namiya_user u, namiya_post p ");
+			sql.append("WHERE u.id = p.id and u.id=? ");
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return count;
 	}//method
 
 	//전달받은 글번호에 맞는 글의 내용을 반환하는 메서드
@@ -171,10 +189,8 @@ public class NamiyaDAO {
 			sql.append("id,to_char(p_date,'yyyy.mm.dd') timeposted from namiya_post) p ");
 			sql.append(", namiya_user u where u.id=p.id and p.reply=0 and rnum between ? and ? ");
 			pstmt=con.prepareStatement(sql.toString());
-			//pstmt.setInt(1, pagingBean.getStartRowNumber());
-			//pstmt.setInt(2, pagingBean.getEndRowNumber());
-			pstmt.setInt(1, 1);
-			pstmt.setInt(2, 5);
+			pstmt.setInt(1, pagingBean.getStartRowNumber());
+			pstmt.setInt(2, pagingBean.getEndRowNumber());
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				NamiyaUserVO vo=new NamiyaUserVO();
@@ -258,6 +274,40 @@ public class NamiyaDAO {
 			closeAll(rs, pstmt, con);
 		}
 		return vo;
+	}
+
+	public ArrayList<NamiyaPostVO> myPostList(String id,PagingBean pagingBean) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		ArrayList<NamiyaPostVO> list=new ArrayList<NamiyaPostVO>();
+		try {
+			con=dataSource.getConnection();
+			StringBuilder sql=new StringBuilder();
+			sql.append("select p.p_no,p.p_title,p.timeposted,p.p_lock,u.nickname ");
+			sql.append("from (select row_number() over(order by p_no desc) as rnum,p_no,p_title,p_lock,reply, ");
+			sql.append("id,to_char(p_date,'yyyy.mm.dd') timeposted from namiya_post) p ");
+			sql.append(", namiya_user u where u.id=p.id and u.id=? and rnum between ? and ? ");
+			pstmt=con.prepareStatement(sql.toString());
+			pstmt.setString(1, id);
+			pstmt.setInt(2, pagingBean.getStartRowNumber());
+			pstmt.setInt(3, pagingBean.getEndRowNumber());
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				NamiyaUserVO vo=new NamiyaUserVO();
+				vo.setNickName(rs.getString(5));
+				NamiyaPostVO pvo=new NamiyaPostVO();
+				pvo.setpNo(rs.getInt(1));
+				pvo.setpTitle(rs.getString(2));
+				pvo.setpDate(rs.getString(3));
+				pvo.setLock(rs.getString(4));
+				pvo.setUserVO(vo);
+				list.add(pvo);
+			}
+		}finally {
+			closeAll(rs, pstmt, con);
+		}
+		return list;
 	}
 
 	

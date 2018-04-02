@@ -1,9 +1,10 @@
-package com.namiya.controller;
+package com.namiya.controller.reply;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.namiya.controller.Controller;
 import com.namiya.model.NamiyaAnswerVO;
 import com.namiya.model.NamiyaDAO;
 

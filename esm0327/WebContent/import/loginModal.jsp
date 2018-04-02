@@ -139,11 +139,21 @@
 		});//keyup
 		//submit 제어
 		$("#register").submit(function(){
-			if($("#checkId").text()=="사용가능!"&&$("#checkPass").text()=="비밀번호 일치!"){
+			if($('input:checkbox[id="accept-terms"]').is(":checked")==false){
+				alert("약관에 동의해 주세요");
+				$("#accept-terms").focus();
+				return false;
+			}else if($("#checkId").text()!="사용가능!"){
+				alert("중복된 아이디입니다. 아이디를 확인해 주세요.");
+				$("#signup-email").focus();
+				return false;
+			}else if($("#checkPass").text()!="비밀번호 일치!"){
+				alert("비밀번호와 비밀번호 확인이 다릅니다. 비밀번호를 확인해 주세요.");
+				$("#signup-password2").focus();
+				return false;
+			}else{
 				return true;
 			}
-			alert("아이디와 비밀번호를 확인해 주세요.");
-			return false;
 		})//click
 	});//ready
 </script>
