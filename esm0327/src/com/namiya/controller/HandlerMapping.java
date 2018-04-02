@@ -11,6 +11,8 @@ import com.namiya.controller.reply.DeleteReplyController;
 import com.namiya.controller.reply.ReadReplyController;
 import com.namiya.controller.reply.UnAnsweredListController;
 import com.namiya.controller.reply.UpdateReplyController;
+import com.namiya.controller.reply.UpdateReplyViewController;
+import com.namiya.controller.user.CheckIdController;
 import com.namiya.controller.user.CreateUserController;
 import com.namiya.controller.user.DeleteUserController;
 import com.namiya.controller.user.LoginController;
@@ -30,6 +32,8 @@ public class HandlerMapping {
 		Controller c=null;
 		if(command.equals("Login")) {
 			c=new LoginController();
+		}else if(command.equals("CheckId")) {
+			c=new CheckIdController();
 		}else if(command.equals("CreateUser")) {
 			c=new CreateUserController();
 		}else if(command.equals("UpdateUser")) {
@@ -52,6 +56,8 @@ public class HandlerMapping {
 			c=new ReadReplyController();
 		}else if(command.equals("UpdatePost")) {
 			c=new UpdatePostController();
+		}else if(command.equals("UpdateReplyView")) {
+			c=new UpdateReplyViewController();
 		}else if(command.equals("UpdateReply")) {
 			c=new UpdateReplyController();
 		}else if(command.equals("DeletePost")) {

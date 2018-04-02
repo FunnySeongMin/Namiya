@@ -23,8 +23,6 @@ public class NamiyaUserVO {
 		this.password = password;
 	}
 
-	
-	
 	public NamiyaUserVO() {
 		super();
 	}
