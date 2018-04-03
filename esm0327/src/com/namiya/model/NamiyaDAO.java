@@ -383,7 +383,8 @@ public class NamiyaDAO {
 		}
 		return vo;
 	}
-
+	
+	//내 상담 리스트
 	public ArrayList<NamiyaPostVO> myPostList(String id,PagingBean pagingBean) throws SQLException {
 		Connection con=null;
 		PreparedStatement pstmt=null;
@@ -424,7 +425,7 @@ public class NamiyaDAO {
 			ResultSet rs = null;
 			ArrayList<NamiyaPostVO> list = new ArrayList<NamiyaPostVO>();
 			try {
-				con = dataSource.getConnection();
+				con = dataSource.getConnection();				
 				StringBuilder sql=new StringBuilder();
 				sql.append("select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname ");
 				sql.append("from (select row_number() over(order by p_no desc) ");

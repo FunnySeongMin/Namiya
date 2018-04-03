@@ -35,8 +35,8 @@ public class ReadMyPostListController implements Controller {
 		}
 		ArrayList<NamiyaPostVO> list=NamiyaDAO.getInstance().myPostList(id,pagingBean);
 		ListVO lvo=new ListVO(list, pagingBean);
-		request.setAttribute("", lvo);
-		request.setAttribute("url", "");
+		request.setAttribute("listvo", lvo);
+		request.setAttribute("url", "/post/readMyPost.jsp");
 		return "home.jsp";
 	}
 
