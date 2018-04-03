@@ -29,8 +29,8 @@
 			<li class="dropdown">
 			<a href="#"  id="mypage" class="dropdown-toggle" data-toggle="dropdown"><i class="fas fa-user"></i>마이페이지 <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="${pageContext.request.contextPath }/dispatcher?command=UpdateUserView">개인정보 수정</a></li>
-						<li><a href="#">내상담목록</a></li>
+						<li><a href="${pageContext.request.contextPath}/dispatcher?command=UpdateUserView">개인정보 수정</a></li>
+						<li><a href="${pageContext.request.contextPath}/dispatcher?command=ReadMyPostList">내상담목록</a></li>
 						<!-- <li class="divider"></li>
 						<li class="dropdown-header">Dropdown header</li> -->
 						<!-- <li><a href="#">Separated link</a></li>

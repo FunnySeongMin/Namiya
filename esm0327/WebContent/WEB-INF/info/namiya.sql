@@ -102,3 +102,7 @@ rnum, p_no, p_title, p_lock, reply, id,
 to_char(p_date,'yyyy.mm.dd') p_date from namiya_post)
 p, namiya_user u where p.id=u.id and rnum
 between 1 and 5 order by p_no desc
+
+
+-- 게시글 검색 (제목별 작성자별 검색탭)
+select count(*) from namiya_post where p_title like '%' || ? || '%';

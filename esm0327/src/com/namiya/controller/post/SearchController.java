@@ -30,12 +30,12 @@ public class SearchController implements Controller {
 			list = NamiyaDAO.getInstance().readPostByTitle(keyword, pagingBean);
 		}else if(category.equals("작성자")) {
 			list = NamiyaDAO.getInstance().readPostByNickName(keyword, pagingBean);
-		} else {
+		}else{
 			list = NamiyaDAO.getInstance().readPostByContent(keyword, pagingBean);
 		}
 		ListVO vo=new ListVO(list, pagingBean);
 		request.setAttribute("listvo",vo);
-		request.setAttribute("url", "/post/readPostList.jsp");
+		request.setAttribute("url", "/post/searchList.jsp");
 		return "home.jsp";
 	}
 
