@@ -39,16 +39,16 @@
 <script src="../assets/js/typeahead.min.js"></script>
 <!-- emailJS -->
 <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<title>updateUser_result</title>
+<title>tempPassword_fail</title>
 </head>
 <body>
 </body>
 <script>
 $(document).ready(function() {
 	BootstrapDialog.show({
-			type : "type-success",
-			title : "<i class='fas fa-check-circle'></i> 알림",
-			message : "개인정보가 수정 되었습니다.",
+			type : "type-danger",
+			title : "<i class='fas fa-exclamation-circle'></i> 알림",
+			message : "아이디가 존재하지 않습니다. 다시 확인해주세요.",
 			closable : false,
 			onhidden : function(dialogRef) {
 				location.href = "${pageContext.request.contextPath}/index.jsp";

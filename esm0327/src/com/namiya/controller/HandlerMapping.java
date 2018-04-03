@@ -20,6 +20,7 @@ import com.namiya.controller.user.CreateUserController;
 import com.namiya.controller.user.DeleteUserController;
 import com.namiya.controller.user.LoginController;
 import com.namiya.controller.user.LogoutController;
+import com.namiya.controller.user.TempPasswordController;
 import com.namiya.controller.user.TotalUserCountController;
 import com.namiya.controller.user.UpdateUserController;
 import com.namiya.controller.user.UpdateUserViewController;
@@ -49,6 +50,8 @@ public class HandlerMapping {
 			c=new UpdateUserViewController();
 		}else if(command.equals("DeleteUser")) {
 			c=new DeleteUserController();
+		}else if(command.equals("TempPassword")) {
+			c=new TempPasswordController();
 		}else if(command.equals("TotalUserCount")) {
 			c=new TotalUserCountController();
 		}else if(command.equals("CreatePost")) {

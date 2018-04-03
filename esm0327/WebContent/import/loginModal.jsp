@@ -216,70 +216,56 @@
 		//submit 제어
 		$("#register").submit(function(){
 			if($('input:checkbox[id="accept-terms"]').is(":checked")==false){
-				alert("약관에 동의해 주세요");
-				$("#accept-terms").focus();
+				failMessage("약관에 동의해 주세요.","#accept-terms");
+				//alert("약관에 동의해 주세요.");
+				//$("#accept-terms").focus();
 				return false;
 			}else if($("#checkId").text()!="사용가능!"){
-				alert("중복된 아이디입니다. 아이디를 확인해 주세요.");
-				$("#signup-email").focus();
+				failMessage("중복된 아이디입니다. 아이디를 확인해 주세요.","#signup-email");
+				//alert("중복된 아이디입니다. 아이디를 확인해 주세요.");
+				//$("#signup-email").focus();
 				return false;
 			}else if($("#checkPass").text()!="비밀번호 일치!"){
-				alert("비밀번호와 비밀번호 확인이 다릅니다. 비밀번호를 확인해 주세요.");
-				$("#signup-password2").focus();
+				failMessage("비밀번호와 비밀번호 확인이 다릅니다. 비밀번호를 확인해 주세요.","#signup-password2");
+				//alert("비밀번호와 비밀번호 확인이 다릅니다. 비밀번호를 확인해 주세요.");
+				//$("#signup-password2").focus();
 				return false;
 			}else{
 				return true;
+			}
+			// 빨간색 알러트
+			function failMessage(msg,form) {
+			     BootstrapDialog.show({
+			     	type : "type-danger",
+			        title : "<i class='fas fa-exclamation-circle'></i> 알림",
+			        message : msg,
+			        closable : false,
+			        onhidden : function(dialogRef) {
+			        	if(form=="#signup-email"){
+			        		$(form).val("");
+			        		$("#checkId").html("아이디를 작성하세요!").css("color","green");
+			        		//form.val("");
+			        	}
+			        	$(form).focus();
+	               		//form.focus();
+	               },
+	               buttons : [ {
+	               label : "확인",
+	               hotkey : 13,
+	               action : function(cancel) {
+	               cancel.close();
+	               }
+	           		} ]
+				});
 			}
 		})//click
 		
 		// 임시비밀번호 발송
 		$("#tempPasswordSend").click(function() {
-			var email = $("#tempEmail").val();
-			BootstrapDialog.show({
-				type : "type-info",
-				title : "알림",
-				message : "이메일로 임시비밀번호를 보내시겠습니까?",
-				closable : false,
-				 buttons: [{
-		                icon: 'glyphicon glyphicon-send',
-		                label: '발송',
-		                cssClass: 'btn-info',
-		                autospin: true,
-		                action: function(dialogRef){
-		                	passwordMailSend(email);
-		                    dialogRef.enableButtons(false);
-		                    dialogRef.setClosable(false);
-		                    dialogRef.getModalBody().html("임시비밀번호가 발송중입니다");
-		                    setTimeout(function(){
-		                    	location.href = "${pageContext.request.contextPath}/index.jsp";
-		                        dialogRef.close();
-		                    }, 3000);
-		                }
-		            }, {
-		                label: '취소',
-		                action: function(dialogRef){
-		                    dialogRef.close();
-		                }
-		            }]
-			}); // bootstrapDialog
-		}); // submit
-		
-		// 임시비밀번호 메일로 발송
-		function passwordMailSend(email) {
-			var emailC = {
-				"recipient":email,
-				"title":"안녕하세요 남이야잡화점의 기적입니다",
-				"contents":randomPassword(8)
-			}
-			emailjs.init("user_0CjQxIrj0fRbRXubJes54");
-			emailjs.send("oper37370_gmail_com", "namiyamail", emailC)
-			.then(function(response) {
-				console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
-			}, function(err) {
-				console.log("FAILED. error=", err); 
-			});
-		} // passwordMailSend
-		
+			var email = $("#tempEmail").val(); // 발송할 이메일주소 가져오기
+			var password = randomPassword(8); // 난수 비밀번호 8자리 생성
+			location.href = "${pageContext.request.contextPath}/dispatcher?command=TempPassword&id="+email+"&password="+password;
+		});
 		// 임시비밀번호 난수 만들기
 		function randomPassword(length) {
 		    var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&1234567890";

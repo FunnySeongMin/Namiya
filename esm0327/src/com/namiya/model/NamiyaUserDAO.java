@@ -81,14 +81,78 @@ public class NamiyaUserDAO {
 		}
 	}//method
 	
-	//회원수정 메서드
-	public void updateUser(NamiyaUserVO vo) {
-		
+	// 임시비밀번호 발송
+	public int tempPassword(String id, String password) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			con = dataSource.getConnection();
+			// 아이디가 존재하는지 조회
+			String sql = "SELECT count(*) FROM namiya_user WHERE id = ?";
+			/*
+			 	SELECT id FROM namiya_user WHERE id = ?
+			 */
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+			pstmt.close();
+			
+			// 비밀번호 수정
+			 sql = "UPDATE namiya_user SET password = ? WHERE id = ?";
+			/*
+				UPDATE namiya_user SET password = ? WHERE id = ?
+			 */
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, password);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		return result;
+	}// method
+	
+	// 회원수정 메서드
+	public void updateUser(NamiyaUserVO vo) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="UPDATE namiya_user SET nickname = ?, password = ? WHERE id = ?";
+			/*
+				UPDATE namiya_user SET nickname = ?, password = ? WHERE id = ?
+			 */
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, vo.getNickName());
+			pstmt.setString(2, vo.getPassword());
+			pstmt.setString(3, vo.getId());
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 	
 	//회원탈퇴 메서드
-	public void deleteUser(String id) {
-		
+	public void deleteUser(String id) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="UPDATE namiya_user SET grade = 'd' WHERE id = ?";
+			/*
+				UPDATE namiya_user SET grade = 'd' WHERE id = ?
+			 */
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 	
 	//전체 회원 수 조회 메서드

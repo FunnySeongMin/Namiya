@@ -19,6 +19,7 @@ public class DeleteUserController implements Controller {
 		}
 		NamiyaUserVO userVO = (NamiyaUserVO)session.getAttribute("userVO"); // 로그인한 세션정보 가져오기
 		NamiyaUserDAO.getInstance().deleteUser(userVO.getId()); // 세션정보에 저장된 id로 DB반영
+		session.invalidate();
 		return "redirect:result/deleteUser_result.jsp";
 	}
 
