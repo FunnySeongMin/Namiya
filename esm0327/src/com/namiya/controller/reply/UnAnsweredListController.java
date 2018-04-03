@@ -32,8 +32,8 @@ public class UnAnsweredListController implements Controller {
 		ArrayList<NamiyaPostVO> list=NamiyaDAO.getInstance().unAnsweredList(pagingBean);
 		ListVO vo=new ListVO(list, pagingBean);
 		System.out.println(list.size());
-		request.setAttribute("list", vo);
-		request.setAttribute("url", "/post/readPostList.jsp");
+		request.setAttribute("listvo", vo);
+		request.setAttribute("url", "/post/unAnsweredList.jsp");
 		return "home.jsp";
 	}
 
