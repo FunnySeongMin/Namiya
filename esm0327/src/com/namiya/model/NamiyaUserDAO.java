@@ -81,14 +81,42 @@ public class NamiyaUserDAO {
 		}
 	}//method
 	
-	//회원수정 메서드
-	public void updateUser(NamiyaUserVO vo) {
-		
+	// 회원수정 메서드
+	public void updateUser(NamiyaUserVO vo) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="UPDATE namiya_user SET nickname = ?, password = ? WHERE id = ?";
+			/*
+				UPDATE namiya_user SET nickname = ?, password = ? WHERE id = ?
+			 */
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, vo.getNickName());
+			pstmt.setString(2, vo.getPassword());
+			pstmt.setString(3, vo.getId());
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 	
 	//회원탈퇴 메서드
-	public void deleteUser(String id) {
-		
+	public void deleteUser(String id) throws SQLException {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		try {
+			con=dataSource.getConnection();
+			String sql="UPDATE namiya_user SET grade = 'd' WHERE id = ?";
+			/*
+				UPDATE namiya_user SET grade = 'd' WHERE id = ?
+			 */
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
+		}finally {
+			closeAll(pstmt, con);
+		}
 	}//method
 	
 	//전체 회원 수 조회 메서드

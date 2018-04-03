@@ -131,7 +131,7 @@ a.post {
 		<!-- 페이지그룹 시작번호부터 끝번호 및 현재 페이지 -->
 		<c:forEach var="page" begin="${pb.startPageOfPageGroup}" end="${pb.endPageOfPageGroup}">
 		<c:choose>
-			<c:when test="${pb.nowPage!=page }">
+			<c:when test="${pb.nowPage!=page}">
 				<li><a href="dispatcher?command=ReadPostList&pageNo=${page}">${page}</a></li>
 			</c:when>
 			<c:otherwise>

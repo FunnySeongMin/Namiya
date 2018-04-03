@@ -40,6 +40,8 @@ CREATE TABLE namiya_answer (
 -- 관리자 가입
 INSERT INTO namiya_user 
 VALUES('ukyi@naver.com','123','욱이','a'); 
+INSERT INTO namiya_user 
+VALUES('jobim1225@naver.com','1234','배부른 길고양이','a'); 
 
 -- 회원 가입
 INSERT INTO namiya_user(id, password, nickname ) 
@@ -95,3 +97,10 @@ WHERE a.p_no = p.p_no;
 
 -- 답글 삭제
 DELETE FROM namiya_answer 
+
+select p.p_no, p.p_title, p.p_date, p.p_lock, p.reply, p.id, u.nickname
+from (select row_number() over(order by p_no desc)
+rnum, p_no, p_title, p_lock, reply, id,
+to_char(p_date,'yyyy.mm.dd') p_date from namiya_post)
+p, namiya_user u where p.id=u.id and rnum
+between 1 and 5 order by p_no desc
