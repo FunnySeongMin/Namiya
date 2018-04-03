@@ -471,7 +471,7 @@ public class NamiyaDAO {
 			sql.append("from (select row_number() over(order by p_no desc) ");
 			sql.append("rnum, p_no, p_title, p_lock, reply, u.id, ");
 			sql.append("to_char(p_date,'yyyy.mm.dd') p_date from namiya_post n, namiya_user u ");
-			sql.append("where n.id=u.id and u.nickname = ? ) p, ");
+			sql.append("where n.id=u.id and u.nickname=?) p, ");
 			sql.append("namiya_user u where p.id=u.id and rnum ");
 			sql.append("between ? and ? order by p_no desc");
 			pstmt = con.prepareStatement(sql.toString());
