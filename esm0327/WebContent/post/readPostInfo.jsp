@@ -76,17 +76,29 @@ a.post {
 		$("#replyupdateview").show();
 	}
 	function deleteConfirm() {
-		if (confirm("게시글을 삭제하시겠습니까?")) {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=DeletePost&pNo=${requestScope.postVO.pNo}";
-		} else {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=ReadPostInfo&pNo=${requestScope.postVO.pNo}";
-		}
+		var url = "${pageContext.request.contextPath}/dispatcher?command=DeletePost&pNo=${requestScope.postVO.pNo}";
+		confirmModal("게시글을 삭제하시겠습니까?",url,"danger")
 	}
 	function updateConfirm() {
-		if (confirm("게시글을 수정하시겠습니까?")) {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=UpdatePostView&pNo=${requestScope.postVO.pNo}";
-		} else {
-			location.href = "${pageContext.request.contextPath}/dispatcher?command=ReadPostInfo&pNo=${requestScope.postVO.pNo}";
-		}	
+		var url = "${pageContext.request.contextPath}/dispatcher?command=UpdatePostView&pNo=${requestScope.postVO.pNo}";
+		confirmModal("게시글을 수정하시겠습니까?",url,"success")
+	}
+	
+	function confirmModal(msg,url,css) {
+		BootstrapDialog.confirm({
+			title : "<i class='fas fa-check-circle'></i> 알림",
+            message: msg,
+            type : "type-"+css,
+            btnCancelLabel: '취소', 
+            btnOKLabel: '확인', 
+            btnOKClass: 'btn-'+css,
+            callback: function(result) {
+                if(result) {
+                    location.href = url;
+                }else {
+                	
+                }
+            }
+        });
 	}
 </script>
