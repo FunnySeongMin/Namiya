@@ -14,7 +14,7 @@ public class CreateReplyController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//답변을 등록시키고 그 글의 번호를 반환받아 보여주는 컨트롤러
 		HttpSession session=request.getSession(false);
-		if(session==null||session.getAttribute("mvo")==null){
+		if(session==null||session.getAttribute("userVO")==null){
 			return "redirect:index.jsp";
 		}
 		int pNo=Integer.parseInt(request.getParameter("pno"));

@@ -13,7 +13,7 @@ public class DeleteReplyController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//답변 삭제
 		HttpSession session=request.getSession(false);
-		if(session==null||session.getAttribute("mvo")==null){
+		if(session==null||session.getAttribute("userVO")==null){
 			return "redirect:index.jsp";
 		}
 		int pno=Integer.parseInt(request.getParameter("pno"));

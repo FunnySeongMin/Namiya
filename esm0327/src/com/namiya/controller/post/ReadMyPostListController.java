@@ -20,7 +20,7 @@ public class ReadMyPostListController implements Controller {
 		//내가 작성한 글의 리스트를 뽑아내기 위해서 우선 내가 작성한 글의 총 개수를 구하고
 		//내가 작성한 글을 리스트에 저장한다.
 		HttpSession session=request.getSession(false);
-		if(session==null||session.getAttribute("mvo")==null){
+		if(session==null||session.getAttribute("userVO")==null){
 			return "redirect:index.jsp";
 		}
 		NamiyaUserVO vo=(NamiyaUserVO) session.getAttribute("userVO");
