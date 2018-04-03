@@ -262,52 +262,10 @@
 		
 		// 임시비밀번호 발송
 		$("#tempPasswordSend").click(function() {
-			var email = $("#tempEmail").val();
-			BootstrapDialog.show({
-				type : "type-info",
-				title : "알림",
-				message : "이메일로 임시비밀번호를 보내시겠습니까?",
-				closable : false,
-				 buttons: [{
-		                icon: 'glyphicon glyphicon-send',
-		                label: '발송',
-		                cssClass: 'btn-info',
-		                autospin: true,
-		                action: function(dialogRef){
-		                	passwordMailSend(email);
-		                    dialogRef.enableButtons(false);
-		                    dialogRef.setClosable(false);
-		                    dialogRef.getModalBody().html("임시비밀번호가 발송중입니다");
-		                    setTimeout(function(){
-		                    	location.href = "${pageContext.request.contextPath}/index.jsp";
-		                        dialogRef.close();
-		                    }, 3000);
-		                }
-		            }, {
-		                label: '취소',
-		                action: function(dialogRef){
-		                    dialogRef.close();
-		                }
-		            }]
-			}); // bootstrapDialog
-		}); // submit
-		
-		// 임시비밀번호 메일로 발송
-		function passwordMailSend(email) {
-			var emailC = {
-				"recipient":email,
-				"title":"안녕하세요 남이야잡화점의 기적입니다",
-				"contents":randomPassword(8)
-			}
-			emailjs.init("user_0CjQxIrj0fRbRXubJes54");
-			emailjs.send("oper37370_gmail_com", "namiyamail", emailC)
-			.then(function(response) {
-				console.log("SUCCESS. status=%d, text=%s", response.status, response.text);
-			}, function(err) {
-				console.log("FAILED. error=", err); 
-			});
-		} // passwordMailSend
-		
+			var email = $("#tempEmail").val(); // 발송할 이메일주소 가져오기
+			var password = randomPassword(8); // 난수 비밀번호 8자리 생성
+			location.href = "${pageContext.request.contextPath}/dispatcher?command=TempPassword&id="+email+"&password="+password;
+		});
 		// 임시비밀번호 난수 만들기
 		function randomPassword(length) {
 		    var chars = "abcdefghijklmnopqrstuvwxyz!@#$%^&1234567890";

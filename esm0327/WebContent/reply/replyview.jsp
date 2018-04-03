@@ -2,21 +2,33 @@
     pageEncoding="UTF-8"%>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$.ajax({//저장된 답글 불러오기
+            type:"get",
+            dataType:"json",
+            url:"${pageContext.request.contextPath}/dispatcher",
+            data:"command=ReadReply&pno="+${postVO.pNo},
+            success:function(data){
+              $("#title").html(data.aTitle);
+              $("#date").html(data.aDate);
+              $("#content").html("<pre>"+data.aContent+"</pre>");
+            }//sucess
+         });//ajax
 		$("#update").click(function(){
-			location.href="dispatcher?command=UpdateReplyView&pno="+${requestScope.avo.pNo};
+			location.href="dispatcher?command=UpdateReplyView&pno=";
 		});
 		$("#delete").click(function(){
-			location.href="dispatcher?command=DeleteReply&pno="+${requestScope.avo.pNo};
+			location.href="dispatcher?command=DeleteReply&pno=";
 		});
 	});
 </script>
 <table>
 	<tr>
-		<th colspan="2">제목 :  ${requestScope.avo.aTitle }		등록일 : ${requestScope.avo.aDate }</th>
+		<th colspan="2"><span id="title"></span> 	<span id="date"></span></th>
+		
 	</tr>
 	<tr>
-		<th>내용</th>
-		<th><pre>${requestScope.avo.aContent }</pre></th>
+		<th><span id="content"></span></th>
+		<th></th>
 	</tr>
 </table>
 <br><br>

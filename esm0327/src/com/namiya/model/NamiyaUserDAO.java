@@ -81,6 +81,42 @@ public class NamiyaUserDAO {
 		}
 	}//method
 	
+	// 임시비밀번호 발송
+	public int tempPassword(String id, String password) throws SQLException {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int result = 0;
+		try {
+			con = dataSource.getConnection();
+			// 아이디가 존재하는지 조회
+			String sql = "SELECT count(*) FROM namiya_user WHERE id = ?";
+			/*
+			 	SELECT id FROM namiya_user WHERE id = ?
+			 */
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				result = rs.getInt(1);
+			}
+			pstmt.close();
+			
+			// 비밀번호 수정
+			 sql = "UPDATE namiya_user SET password = ? WHERE id = ?";
+			/*
+				UPDATE namiya_user SET password = ? WHERE id = ?
+			 */
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, password);
+			pstmt.setString(2, id);
+			pstmt.executeUpdate();
+		} finally {
+			closeAll(rs, pstmt, con);
+		}
+		return result;
+	}// method
+	
 	// 회원수정 메서드
 	public void updateUser(NamiyaUserVO vo) throws SQLException {
 		Connection con=null;
