@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	
 	$("#cancel").submit(function(){
 		location.href="index.jsp";
 	});
@@ -12,11 +14,11 @@ $(document).ready(function(){
 <input type="hidden" name="pno" value="${requestScope.avo.pNo }">
 <table>
 	<tr>
-		<th>제목</th>
+		<th id="title">제목</th>
 		<th><input type="text" name="atitle" value=""></th>
 	</tr>
 	<tr>
-		<th>내용</th>
+		<th id="content">내용</th>
 		<th><pre><textarea rows="50" cols="50" name="acontent"></textarea></pre></th>
 	</tr>
 </table>

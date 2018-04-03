@@ -84,7 +84,10 @@ WHERE u.id = p.id;
 UPDATE namiya_post SET reply = 1
 WHERE p_no = 1;
 INSERT INTO namiya_answer(p_no, a_title, a_content) 
-VALUES(1, '여기는 제목', '여기는 답글내용');
+VALUES(41, '답글입니다.', '화이팅!!');
+
+UPDATE namiya_post SET p_title = '답글 달림', p_content = '수정된 글내용', reply=1
+WHERE p_no=41;
 
 -- 답글 수정
 UPDATE namiya_answer SET a_title = '수정된 답글제목', a_content = '수정된 답글내용'
