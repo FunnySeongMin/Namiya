@@ -147,7 +147,8 @@
 					<!-- 약관 -->
 					<p class="cd-signin-modal__fieldset">
 						<input type="checkbox" id="accept-terms" class="cd-signin-modal__input ">
-						<label for="accept-terms">약관에 동의합니다 <a href="#0"><strong>약관보기</strong></a></label>
+						<label for="accept-terms">약관에 동의합니다 <button type="button" class="btn btn-link" id="termBtn"><strong>약관보기</strong></button></label>
+						<c:import url="import/term.jsp"/>
 					</p>
 					
 					<!-- 회원가입 폼클릭 버튼 -->
@@ -276,6 +277,30 @@
 		    }
 		    return pass;
 		} // randomPassword
+		
+		
+		// 약관보기
+		$("#termBtn").click(function() {
+			var term = $("#term").html();
+			BootstrapDialog.show({
+				size : BootstrapDialog.SIZE_WIDE,
+				type : "type-primary",
+				title : "<i class='fas fa-info-circle'></i> 약관",
+				message : "<p style='font-size: 20px;'>"+term+"</p>",
+				closable : false,
+				onhidden : function(dialogRef) {
+					
+				},
+				buttons : [ {
+					label : "확인",
+					action : function(cancel) {
+						cancel.close();
+					}
+				} ]
+			});
+		}) // 약관보기
+
+		
 		
 	});//ready
 </script>
